@@ -4,7 +4,7 @@ A Roguelike RPG, with randomly generated levels, items, enemies, and traps! Base
 
 This is a work in progress not yet in a playable state.
 
-Shattered Pixel Dungeon Hack currently compiles for Android and desktop platforms. It is available from [GitHub](https://github.com/00-Evan/shattered-pixel-dungeon/releases), [Google Play](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon), [Amazon](https://www.amazon.com/Shattered-Pixel-Dungeon/dp/B00OH2C21M), and [F-Droid](https://f-droid.org/repository/browse/?fdid=com.shatteredpixel.shatteredpixeldungeon).
+Shattered Pixel Dungeon Hack currently compiles for Android and desktop platforms.
 
 Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
 
