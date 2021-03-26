@@ -147,7 +147,11 @@ public class Hero extends Char {
 	public static final int MAX_LEVEL = 30;
 
 	public static final int STARTING_STR = 10;
-	
+	public static final int STARTING_SPD = 10;
+	public static final int STARTING_WIS = 10;
+	public static final int STARTING_VIT = 10;
+	public static final int STARTING_STATPOINTS = 1;
+
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
 	private static final float HUNGER_FOR_SEARCH	= 6f;
@@ -171,6 +175,10 @@ public class Hero extends Char {
 	public Belongings belongings;
 	
 	public int STR;
+	public int SPD;
+	public int WIS;
+	public int VIT;
+	public int STATPOINTS;
 	
 	public float awareness;
 	
@@ -188,9 +196,13 @@ public class Hero extends Char {
 	public Hero() {
 		super();
 
-		HP = HT = 20;
+
 		STR = STARTING_STR;
-		
+		SPD = STARTING_SPD;
+		WIS = STARTING_WIS;
+		VIT = STARTING_VIT;
+		HP = HT = VIT * 2;
+		STATPOINTS = STARTING_STATPOINTS;
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
@@ -199,7 +211,7 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 		
-		HT = 20 + 5*(lvl-1) + HTBoost;
+		HT = (VIT * 2) + 5*(lvl-1) + HTBoost;
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		
@@ -226,9 +238,84 @@ public class Hero extends Char {
 		return STR;
 	}
 
+	public int setStr(int s) {
+		this.STR = s;
+		return this.STR;
+	}
+
+	public int incStr() {
+		this.setStr(this.STR+1);
+		return this.STR;
+	}
+
+	public int setSpd(int s) {
+		this.SPD = s;
+		return this.SPD;
+	}
+
+
+	public int incSpd() {
+		this.setSpd(this.SPD+1);
+		return this.SPD;
+	}
+
+	public int setWis(int w) {
+		this.WIS = w;
+		return this.WIS;
+	}
+
+
+	public int incWis() {
+		this.setWis(this.WIS+1);
+		return this.WIS;
+	}
+
+	public int setVit(int v) {
+		this.VIT = v;
+		return this.VIT;
+	}
+
+
+	public int incVit() {
+		this.setVit(this.VIT+1);
+		return this.VIT;
+	}
+
+	public int setStatPoints(int l) {
+		this.STATPOINTS = l;
+		return this.STATPOINTS;
+	}
+
+	public int incStatPoints() {
+		this.setStatPoints(this.STATPOINTS+1);
+		return this.STATPOINTS;
+	}
+	public int SPD() {
+		int SPD = this.SPD;
+		return SPD;
+	}
+
+	public int WIS() {
+		int WIS = this.WIS;
+		return WIS;
+	}
+
+	public int VIT() {
+		int VIT = this.VIT;
+		return VIT;
+	}
+
+	public int STATPOINTS(){
+		int STATPOINTS = this.STATPOINTS;
+		return STATPOINTS;
+	}
+
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
 	private static final String STRENGTH	= "STR";
+	private static final String SPEED	    = "SPD";
+	private static final String WISDOM   	= "WIS";
+	private static final String VITALITY	= "VIT";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
@@ -246,7 +333,9 @@ public class Hero extends Char {
 		bundle.put( DEFENSE, defenseSkill );
 		
 		bundle.put( STRENGTH, STR );
-		
+		bundle.put( SPEED, SPD );
+		bundle.put( WISDOM, WIS );
+		bundle.put( VITALITY, VIT );
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 		
@@ -273,13 +362,18 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
-
+		SPD = bundle.getInt( SPEED );
+		WIS = bundle.getInt( WISDOM );
+		VIT = bundle.getInt( VITALITY );
 		belongings.restoreFromBundle( bundle );
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.level = bundle.getInt( LEVEL );
 		info.str = bundle.getInt( STRENGTH );
+		info.spd = bundle.getInt( SPEED );
+		info.wis = bundle.getInt( WISDOM );
+		info.vit = bundle.getInt( VITALITY );
 		info.exp = bundle.getInt( EXPERIENCE );
 		info.hp = bundle.getInt( Char.TAG_HP );
 		info.ht = bundle.getInt( Char.TAG_HT );
@@ -1490,7 +1584,7 @@ public class Hero extends Char {
 					WndHero.lastIdx = 1;
 				}
 			}
-			
+			incStatPoints();
 			Item.updateQuickslot();
 			
 			Badges.validateLevelReached();

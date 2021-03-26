@@ -11,11 +11,11 @@ buildscript {
 allprojects {
 
     ext {
-        appName = 'Shattered Pixel Dungeon'
-        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+        appName = 'Shattered Pixel Dungeon Hack'
+        appPackageName = 'com.hackpixel.hackpixeldungeon'
 
         appVersionCode = 532
-        appVersionName = '0.9.2b'
+        appVersionName = '0.9.2b.0.1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

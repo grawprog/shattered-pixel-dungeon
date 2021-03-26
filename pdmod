@@ -1,0 +1,95 @@
+main goals
+.. add more depth to items and heroes
+...make mage, huntress and rogue more unique in play and the latter two more viable
+... more variety to things
+... give the game more of a 'nethack' feel
+
+items
+... randomized stats within range
+
+armour
+
+tier 1-5
+. - light
+..... spd based
+.   . high evade low block
+
+. - medium
+...... spd raise evade, str raise block
+...... mid evade mid block
+
+. - heavy
+...... str based
+....... low evade high block
+
+weapons
+.... melee
+....... change to work with new stats
+........probably add some more
+.....ranged
+...... ammo based
+.  .... bows etc.
+........... bows, slings scale with str and speed
+........guns etc.
+............ scale attack/reload speed with spd
+.............DMG/accuracy scale with upgrades
+
+..... thrown 
+
+enchantments/glyphs/curses/artifacts
+..... more!!!
+......unique weapons and armor with positive and negative enchantments
+
+potions/scrolls
+... cursed potions and scrolls
+
+magic
+... make spells use mana
+... add/change spells
+
+characters
+... str
+...... used for weapons and armor
+...... boosts DMG for melee weapons
+... spd
+....... used for weapons and dodging
+........increases accuracy and attack speed with all weapons 
+....... increases walking speed
+... wis
+...... used for wand and spell damage
+...... helps determine Max mp
+....vit
+...... helps determine Max life
+.......changes effectiveness of healing potions, eating food
+... mp
+..... used for magic
+classes
+.... mage
+...... mana charge quickly
+...... starts with random spell
+..... huntress
+.........replace stupid bow with infinite quiver
+........ accuracy boost with ranged
+...... warrior
+..... .... no real changes....maybe something with the broken emblem
+.......rogue
+......... weapon and armor changes should make the rogue more versatile 
+
+monsters
+.... more
+
+buffs/status effects
+..... more
+
+changes
+.... more scrolls of upgrade/potions of strength equivalents
+.....remove level cap
+..... probably rescale difficulty
+.... item drop rates
+
+other stuff that might be good
+.... quick weapon swap
+
+future stuff
+... new areas
+....
