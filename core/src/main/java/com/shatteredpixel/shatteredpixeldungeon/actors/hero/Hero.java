@@ -147,7 +147,7 @@ public class Hero extends Char {
 	public static final int MAX_LEVEL = 30;
 
 	public static final int STARTING_STR = 10;
-	public static final int STARTING_SPD = 10;
+	public static final int STARTING_DEX = 10;
 	public static final int STARTING_WIS = 10;
 	public static final int STARTING_VIT = 10;
 	public static final int STARTING_STATPOINTS = 1;
@@ -155,11 +155,11 @@ public class Hero extends Char {
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
 	private static final float HUNGER_FOR_SEARCH	= 6f;
-	
+
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
-	
+
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
 
@@ -169,24 +169,24 @@ public class Hero extends Char {
 	public HeroAction lastAction = null;
 
 	private Char enemy;
-	
+
 	public boolean resting = false;
-	
+
 	public Belongings belongings;
-	
+
 	public int STR;
-	public int SPD;
+	public int DEX;
 	public int WIS;
 	public int VIT;
 	public int STATPOINTS;
-	
+
 	public float awareness;
-	
+
 	public int lvl = 1;
 	public int exp = 0;
-	
+
 	public int HTBoost = 0;
-	
+
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped
@@ -198,27 +198,27 @@ public class Hero extends Char {
 
 
 		STR = STARTING_STR;
-		SPD = STARTING_SPD;
+		DEX = STARTING_DEX;
 		WIS = STARTING_WIS;
 		VIT = STARTING_VIT;
 		HP = HT = VIT * 2;
 		STATPOINTS = STARTING_STATPOINTS;
 		belongings = new Belongings( this );
-		
+
 		visibleEnemies = new ArrayList<>();
 	}
-	
+
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
-		
+
 		HT = (VIT * 2) + 5*(lvl-1) + HTBoost;
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
-		
+
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
-		
+
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
 		}
@@ -229,7 +229,7 @@ public class Hero extends Char {
 		int STR = this.STR;
 
 		STR += RingOfMight.strengthBonus( this );
-		
+
 		AdrenalineSurge buff = buff(AdrenalineSurge.class);
 		if (buff != null){
 			STR += buff.boost();
@@ -238,61 +238,61 @@ public class Hero extends Char {
 		return STR;
 	}
 
-	public int setStr(int s) {
+	public int setSTR(int s) {
 		this.STR = s;
 		return this.STR;
 	}
 
 	public int incStr() {
-		this.setStr(this.STR+1);
+		this.setSTR(this.STR+1);
 		return this.STR;
 	}
 
-	public int setSpd(int s) {
-		this.SPD = s;
-		return this.SPD;
+	public int setDEX(int s) {
+		this.DEX = s;
+		return this.DEX;
 	}
 
 
-	public int incSpd() {
-		this.setSpd(this.SPD+1);
-		return this.SPD;
+	public int incDEX() {
+		this.setDEX(this.DEX+1);
+		return this.DEX;
 	}
 
-	public int setWis(int w) {
+	public int setWIS(int w) {
 		this.WIS = w;
 		return this.WIS;
 	}
 
 
-	public int incWis() {
-		this.setWis(this.WIS+1);
+	public int incWIS() {
+		this.setWIS(this.WIS+1);
 		return this.WIS;
 	}
 
-	public int setVit(int v) {
+	public int setVIT(int v) {
 		this.VIT = v;
 		return this.VIT;
 	}
 
 
-	public int incVit() {
-		this.setVit(this.VIT+1);
+	public int incVIT() {
+		this.setVIT(this.VIT+1);
 		return this.VIT;
 	}
 
-	public int setStatPoints(int l) {
+	public int setSTATPOINTS(int l) {
 		this.STATPOINTS = l;
 		return this.STATPOINTS;
 	}
 
-	public int incStatPoints() {
-		this.setStatPoints(this.STATPOINTS+1);
+	public int incSTATPOINTS() {
+		this.setSTATPOINTS(this.STATPOINTS+1);
 		return this.STATPOINTS;
 	}
-	public int SPD() {
-		int SPD = this.SPD;
-		return SPD;
+	public int DEX() {
+		int DEX = this.DEX;
+		return DEX;
 	}
 
 	public int WIS() {
@@ -313,37 +313,37 @@ public class Hero extends Char {
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
 	private static final String STRENGTH	= "STR";
-	private static final String SPEED	    = "SPD";
+	private static final String DEXTERITY	    = "DEX";
 	private static final String WISDOM   	= "WIS";
 	private static final String VITALITY	= "VIT";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
 		super.storeInBundle( bundle );
-		
+
 		heroClass.storeInBundle( bundle );
 		subClass.storeInBundle( bundle );
 		Talent.storeTalentsInBundle( bundle, this );
-		
+
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
-		
+
 		bundle.put( STRENGTH, STR );
-		bundle.put( SPEED, SPD );
+		bundle.put( DEXTERITY, DEX );
 		bundle.put( WISDOM, WIS );
 		bundle.put( VITALITY, VIT );
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
-		
+
 		bundle.put( HTBOOST, HTBoost );
 
 		belongings.storeInBundle( bundle );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 
@@ -353,25 +353,25 @@ public class Hero extends Char {
 		HTBoost = bundle.getInt(HTBOOST);
 
 		super.restoreFromBundle( bundle );
-		
+
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		Talent.restoreTalentsFromBundle( bundle, this );
-		
+
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
-		
+
 		STR = bundle.getInt( STRENGTH );
-		SPD = bundle.getInt( SPEED );
+		DEX = bundle.getInt( DEXTERITY );
 		WIS = bundle.getInt( WISDOM );
 		VIT = bundle.getInt( VITALITY );
 		belongings.restoreFromBundle( bundle );
 	}
-	
+
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.level = bundle.getInt( LEVEL );
 		info.str = bundle.getInt( STRENGTH );
-		info.spd = bundle.getInt( SPEED );
+		info.dex = bundle.getInt( DEXTERITY );
 		info.wis = bundle.getInt( WISDOM );
 		info.vit = bundle.getInt( VITALITY );
 		info.exp = bundle.getInt( EXPERIENCE );
@@ -486,7 +486,7 @@ public class Hero extends Char {
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
 		
-		float accuracy = 1;
+		float accuracy = 1 + ((this.DEX()-(float)10)/2);
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
 		if (wep instanceof MissileWeapon){
@@ -514,7 +514,7 @@ public class Hero extends Char {
 			return INFINITE_EVASION;
 		}
 		
-		float evasion = defenseSkill;
+		float evasion = defenseSkill + ((this.DEX()-10)/2);
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 		
@@ -597,6 +597,7 @@ public class Hero extends Char {
 	public float speed() {
 
 		float speed = super.speed();
+		speed += ((this.DEX()-(float)10)/2);
 
 		speed *= RingOfHaste.speedMultiplier(this);
 		
@@ -1584,7 +1585,7 @@ public class Hero extends Char {
 					WndHero.lastIdx = 1;
 				}
 			}
-			incStatPoints();
+			incSTATPOINTS();
 			Item.updateQuickslot();
 			
 			Badges.validateLevelReached();

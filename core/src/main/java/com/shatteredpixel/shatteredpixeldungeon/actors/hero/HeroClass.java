@@ -123,7 +123,7 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
-		hero.setVit(11);
+		hero.setVIT(11);
 		hero.updateHT(false);
 		hero.HP = hero.HT;
 		ThrowingStone stones = new ThrowingStone();

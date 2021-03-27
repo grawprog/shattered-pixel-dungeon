@@ -167,15 +167,16 @@ abstract public class Weapon extends KindOfWeapon {
 	public float accuracyFactor( Char owner ) {
 		
 		int encumbrance = 0;
-		
+		float ACC = this.ACC;
 		if( owner instanceof Hero ){
 			encumbrance = STRReq() - ((Hero)owner).STR();
+			ACC += ((((Hero)owner).DEX() -(float) 10)/2);
 		}
 
-		if (hasEnchant(Wayward.class, owner))
-			encumbrance = Math.max(2, encumbrance+2);
+		if (hasEnchant(Wayward.class, owner)) {
+			encumbrance = Math.max(2, encumbrance + 2);
+		}
 
-		float ACC = this.ACC;
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
@@ -184,11 +185,11 @@ abstract public class Weapon extends KindOfWeapon {
 	public float speedFactor( Char owner ) {
 
 		int encumbrance = 0;
+		float DLY = augment.delayFactor(this.DLY);
 		if (owner instanceof Hero) {
 			encumbrance = STRReq() - ((Hero)owner).STR();
+			DLY += ((((Hero)owner).DEX()-(float)10)/2);
 		}
-
-		float DLY = augment.delayFactor(this.DLY);
 
 		DLY *= RingOfFuror.attackDelayMultiplier(owner);
 
