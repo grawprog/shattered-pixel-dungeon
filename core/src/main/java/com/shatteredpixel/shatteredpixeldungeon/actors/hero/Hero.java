@@ -316,6 +316,7 @@ public class Hero extends Char {
 	private static final String DEXTERITY	    = "DEX";
 	private static final String WISDOM   	= "WIS";
 	private static final String VITALITY	= "VIT";
+	private static final String STATS  = "STATS";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
@@ -336,6 +337,7 @@ public class Hero extends Char {
 		bundle.put( DEXTERITY, DEX );
 		bundle.put( WISDOM, WIS );
 		bundle.put( VITALITY, VIT );
+		bundle.put( STATS, STATPOINTS );
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 
@@ -365,6 +367,7 @@ public class Hero extends Char {
 		DEX = bundle.getInt( DEXTERITY );
 		WIS = bundle.getInt( WISDOM );
 		VIT = bundle.getInt( VITALITY );
+		STATPOINTS = bundle.getInt( STATS );
 		belongings.restoreFromBundle( bundle );
 	}
 

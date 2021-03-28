@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StatButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -49,7 +50,7 @@ import java.util.Locale;
 public class WndHero extends WndTabbed {
 	
 	private static final int WIDTH		= 120;
-	private static final int HEIGHT		= 128;
+	private static final int HEIGHT		= 136;
 	
 	private StatsTab stats;
 	private TalentsTab talents;
@@ -109,7 +110,7 @@ public class WndHero extends WndTabbed {
 
 	private class StatsTab extends Group {
 		
-		private static final int GAP = 6;
+		private static final int GAP = 7;
 		
 		private float pos;
 		
@@ -129,10 +130,72 @@ public class WndHero extends WndTabbed {
 
 			pos = title.bottom() + 2*GAP;
 
+
 			statSlot( Messages.get(this, "str"), hero.STR() );
+
+				StatButton strbtn = new StatButton(this, pos) {
+					@Override
+					protected void incStat() {
+						if (hero.STATPOINTS() > 0) {
+							onBackPressed();
+							hero.incStr();
+							hero.setSTATPOINTS(hero.STATPOINTS() - 1);
+
+						}
+					}
+				};
+			if(hero.STATPOINTS() > 0) {
+				add(strbtn);
+			}
 			statSlot( Messages.get(this, "dex"), hero.DEX() );
+
+				StatButton dexbtn = new StatButton(this, pos) {
+					@Override
+					protected void incStat() {
+						if (hero.STATPOINTS() > 0) {
+							onBackPressed();
+							hero.incDEX();
+							hero.setSTATPOINTS(hero.STATPOINTS() - 1);
+
+						}
+					}
+				};
+
+			if(hero.STATPOINTS() > 0) {
+				add(dexbtn);
+			}
 			statSlot( Messages.get(this, "wis"), hero.WIS() );
+
+				StatButton wisbtn = new StatButton(this, pos) {
+					@Override
+					protected void incStat() {
+						if (hero.STATPOINTS() > 0) {
+							onBackPressed();
+							hero.incWIS();
+							hero.setSTATPOINTS(hero.STATPOINTS() - 1);
+						}
+					}
+				};
+
+			if(hero.STATPOINTS() > 0) {
+				add(wisbtn);
+			}
 			statSlot( Messages.get(this, "vit"), hero.VIT() );
+
+				StatButton vitbtn = new StatButton(this, pos) {
+					@Override
+					protected void incStat() {
+						if (hero.STATPOINTS() > 0) {
+							onBackPressed();
+							hero.incVIT();
+							hero.setSTATPOINTS(hero.STATPOINTS() - 1);
+						}
+					}
+				};
+
+			if(hero.STATPOINTS() > 0) {
+				add(vitbtn);
+			}
 			if (hero.shielding() > 0) statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.shielding() + "/" + hero.HT );
 			else statSlot( Messages.get(this, "health"), (hero.HP) + "/" + hero.HT );
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
@@ -146,7 +209,7 @@ public class WndHero extends WndTabbed {
 		}
 
 		private void statSlot( String label, String value ) {
-			
+			Hero hero = Dungeon.hero;
 			RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
 			txt.setPos(0, pos);
 			add( txt );
@@ -155,6 +218,7 @@ public class WndHero extends WndTabbed {
 			txt.setPos(WIDTH * 0.6f, pos);
 			PixelScene.align(txt);
 			add( txt );
+
 			
 			pos += GAP + txt.height();
 		}
@@ -162,7 +226,7 @@ public class WndHero extends WndTabbed {
 		private void statSlot( String label, int value ) {
 			statSlot( label, Integer.toString( value ) );
 		}
-		
+
 		public float height() {
 			return pos;
 		}
