@@ -96,9 +96,13 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final int USES_TO_ID = 20;
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
-	
+
+	protected static int baseStrReq = 10;
+	protected static int baseDexReq = 10;
+
 	public Enchantment enchantment;
 	public boolean curseInfusionBonus = false;
+
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -207,17 +211,26 @@ abstract public class Weapon extends KindOfWeapon {
 
 	public abstract int STRReq(int lvl);
 
-	protected static int STRReq(int tier, int lvl){
+	protected int STRReq(int tier, int lvl){
 		lvl = Math.max(0, lvl);
 
 		//strength req decreases at +1,+3,+6,+10,etc.
-		int req = (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		int req = this.baseStrReq - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 
 		if (Dungeon.hero.pointsInTalent(Talent.STRONGMAN) >= 2) req--;
 
 		return req;
 	}
+	protected int DEXReq(int lvl){
+		lvl = Math.max(0, lvl);
 
+		//strength req decreases at +1,+3,+6,+10,etc.
+		int req = this.baseDexReq - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+
+		//if (Dungeon.hero.pointsInTalent(Talent.STRONGMAN) >= 2) req--;
+
+		return req;
+	}
 	@Override
 	public int level() {
 		return super.level() + (curseInfusionBonus ? 1 : 0);

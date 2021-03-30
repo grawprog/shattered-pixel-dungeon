@@ -29,23 +29,48 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
-	
+
+	protected int baseMin = 1;
+	protected int baseMax = 6;
+	protected int lvlScaleFactor = 1;
+	protected int dexScaleFactor = 1;
+	protected int strScaleFactor = 1;
+	protected int offhandPenalty = 2;
 	public int tier;
+
 
 	@Override
 	public int min(int lvl) {
-		return  tier +  //base
+		return  baseMin +  //base
 				lvl;    //level scaling
 	}
-
-	@Override
-	public int max(int lvl) {
-		return  5*(tier+1) +    //base
-				lvl*(tier+1);   //level scaling
+	public int getOffhandPenalty(){
+		return offhandPenalty;
 	}
 
+	public int offMin(int lvl) {
+		int offmin = this.min(lvl);
+		offmin -= getOffhandPenalty();
+		if (offmin < 0) {
+			offmin = 0;
+		}
+		return offmin;
+	}
+	@Override
+	public int max(int lvl) {
+		return  baseMax +    //base
+				lvl*lvlScaleFactor;   //level scaling
+	}
+	public int offMax(int lvl) {
+		int offmax = this.max(lvl);
+		offmax -= getOffhandPenalty()*2;
+		if (offmax < 0) {
+			offmax = 0;
+		}
+		return offmax;
+	}
 	public int STRReq(int lvl){
-		return STRReq(tier, lvl);
+		return STRReq(baseStrReq, lvl);
 	}
 	
 	@Override

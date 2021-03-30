@@ -489,6 +489,7 @@ public class Hero extends Char {
 	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon offwep = belongings.offhand;
 		
 		float accuracy = 1 + ((this.DEX()-(float)10)/2);
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
@@ -502,6 +503,9 @@ public class Hero extends Char {
 		}
 		
 		if (wep != null) {
+			if (offwep != null){
+				return (int)(attackSkill * accuracy * (wep.accuracyFactor( this ) + offwep.accuracyFactor(this)));
+			}
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
 		} else {
 			return (int)(attackSkill * accuracy);

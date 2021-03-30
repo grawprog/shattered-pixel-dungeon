@@ -42,7 +42,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 	protected String hitSound = Assets.Sounds.HIT;
 	protected float hitSoundPitch = 1f;
-
+	public boolean offhand = false;
 
 	@Override
 	public ArrayList<String> actions(Hero hero ) {
@@ -119,7 +119,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 				equipCursed( hero );
 				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
 			}
-
+			this.offhand = true;
 			hero.spendAndNext( TIME_TO_EQUIP );
 			return true;
 
@@ -135,6 +135,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 		if (super.doUnequip( hero, collect, single )) {
 			if (this == hero.belongings.offhand){
 				hero.belongings.offhand = null;
+				this.offhand = false;
 			}
 			else {
 				hero.belongings.weapon = null;
