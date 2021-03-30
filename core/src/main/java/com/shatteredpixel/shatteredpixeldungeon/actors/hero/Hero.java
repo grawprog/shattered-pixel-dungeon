@@ -272,6 +272,7 @@ public class Hero extends Char {
 
 	public int setVIT(int v) {
 		this.VIT = v;
+		updateHT(false);
 		return this.VIT;
 	}
 

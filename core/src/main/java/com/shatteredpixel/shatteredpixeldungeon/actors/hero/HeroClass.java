@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
@@ -123,11 +124,15 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
+		hero.setSTR(11);
 		hero.setVIT(11);
+		hero.setWIS(9);
 		hero.updateHT(false);
 		hero.HP = hero.HT;
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
+		Shortsword sword2 = new Shortsword();
+		sword2.collect();
 		Dungeon.quickslot.setSlot(0, stones);
 
 		if (hero.belongings.armor != null){
@@ -149,6 +154,10 @@ public enum HeroClass {
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
 
+		hero.setSTR(11);
+		hero.setWIS(11);
+		hero.setDEX(9);
+
 		Dungeon.quickslot.setSlot(0, staff);
 
 		new ScrollHolder().collect();
@@ -168,6 +177,10 @@ public enum HeroClass {
 		ThrowingKnife knives = new ThrowingKnife();
 		knives.quantity(3).collect();
 
+		hero.setDEX(11);
+		hero.setWIS(11);
+		hero.setSTR(9);
+
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
 
@@ -183,6 +196,10 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
 		bow.identify().collect();
+
+		hero.setSTR(11);
+		hero.setDEX(11);
+		hero.setVIT(9);
 
 		Dungeon.quickslot.setSlot(0, bow);
 

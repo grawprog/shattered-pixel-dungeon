@@ -34,16 +34,45 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 abstract public class KindOfWeapon extends EquipableItem {
 	
 	protected static final float TIME_TO_EQUIP = 1f;
 
 	protected String hitSound = Assets.Sounds.HIT;
 	protected float hitSoundPitch = 1f;
+
+
+	@Override
+	public ArrayList<String> actions(Hero hero ) {
+		ArrayList<String> actions = super.actions( hero );
+		//actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP);
+		if (!isEquipped(hero)){
+			actions.add(AC_OFFHAND);
+		}
+		return actions;
+	}
+
+	@Override
+	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+		if (action.equals( AC_OFFHAND )) {
+			//In addition to equipping itself, item reassigns itself to the quickslot
+			//This is a special case as the item is being removed from inventory, but is staying with the hero.
+			int slot = Dungeon.quickslot.getSlot( this );
+			doOffhand(hero);
+			if (slot != -1) {
+				Dungeon.quickslot.setSlot( slot, this );
+				updateQuickslot();
+			}
+		}
+	}
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.weapon == this || hero.belongings.stashedWeapon == this;
+		return hero.belongings.weapon == this || hero.belongings.offhand == this || hero.belongings.stashedWeapon == this;
 	}
 	
 	@Override
@@ -74,13 +103,44 @@ abstract public class KindOfWeapon extends EquipableItem {
 		}
 	}
 
+	public boolean doOffhand( Hero hero ) {
+
+		detachAll( hero.belongings.backpack );
+
+		if (hero.belongings.offhand == null || hero.belongings.offhand.doUnequip( hero, true )) {
+
+			hero.belongings.offhand = this;
+			activate( hero );
+			Talent.onItemEquipped(hero, this);
+			updateQuickslot();
+
+			cursedKnown = true;
+			if (cursed) {
+				equipCursed( hero );
+				GLog.n( Messages.get(KindOfWeapon.class, "equip_cursed") );
+			}
+
+			hero.spendAndNext( TIME_TO_EQUIP );
+			return true;
+
+		} else {
+
+			collect( hero.belongings.backpack );
+			return false;
+		}
+	}
+
 	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
+			if (this == hero.belongings.offhand){
+				hero.belongings.offhand = null;
+			}
+			else {
+				hero.belongings.weapon = null;
 
-			hero.belongings.weapon = null;
+			}
 			return true;
-
 		} else {
 
 			return false;

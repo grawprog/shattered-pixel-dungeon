@@ -36,6 +36,7 @@ import java.util.ArrayList;
 public abstract class EquipableItem extends Item {
 
 	public static final String AC_EQUIP		= "EQUIP";
+	public static final String AC_OFFHAND	= "OFFHAND";
 	public static final String AC_UNEQUIP	= "UNEQUIP";
 
 	{
@@ -45,7 +46,7 @@ public abstract class EquipableItem extends Item {
 	@Override
 	public ArrayList<String> actions(Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
+		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP);
 		return actions;
 	}
 
@@ -59,6 +60,14 @@ public abstract class EquipableItem extends Item {
 			//This is a special case as the item is being removed from inventory, but is staying with the hero.
 			int slot = Dungeon.quickslot.getSlot( this );
 			doEquip(hero);
+			if (slot != -1) {
+				Dungeon.quickslot.setSlot( slot, this );
+				updateQuickslot();
+			}
+		} else if (action.equals( AC_OFFHAND )) {
+			//In addition to equipping itself, item reassigns itself to the quickslot
+			//This is a special case as the item is being removed from inventory, but is staying with the hero.
+			int slot = Dungeon.quickslot.getSlot( this );
 			if (slot != -1) {
 				Dungeon.quickslot.setSlot( slot, this );
 				updateQuickslot();
@@ -98,9 +107,10 @@ public abstract class EquipableItem extends Item {
 
 	public abstract boolean doEquip( Hero hero );
 
+
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 
-		if (cursed && hero.buff(MagicImmune.class) == null) {
+		if (this.cursed && hero.buff(MagicImmune.class) == null) {
 			GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
 			return false;
 		}

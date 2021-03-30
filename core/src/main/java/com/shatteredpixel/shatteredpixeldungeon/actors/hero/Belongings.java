@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -52,7 +51,7 @@ public class Belongings implements Iterable<Item> {
 	public Artifact artifact = null;
 	public KindofMisc misc = null;
 	public Ring ring = null;
-        public KindofWeapon offhand = null;
+	public KindOfWeapon offhand = null;
 
 	//used when thrown weapons temporary occupy the weapon slot
 	public KindOfWeapon stashedWeapon = null;
@@ -79,7 +78,7 @@ public class Belongings implements Iterable<Item> {
 	private static final String ARTIFACT   = "artifact";
 	private static final String MISC       = "misc";
 	private static final String RING       = "ring";
-        private static final String OFFHAND    = "offhand";
+	private static final String OFFHAND    = "offhand";
 	public void storeInBundle( Bundle bundle ) {
 		
 		backpack.storeInBundle( bundle );
@@ -89,7 +88,7 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( ARTIFACT, artifact );
 		bundle.put( MISC, misc );
 		bundle.put( RING, ring );
-                bundle.put( OFFHAND, offhand );
+		bundle.put( OFFHAND, offhand );
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
@@ -226,7 +225,7 @@ public class Belongings implements Iterable<Item> {
 			ring.identify();
 			Badges.validateItemLevelAquired(ring);
 		}
-                if (offhand != null) {
+		if (offhand != null) {
 			offhand.identify();
 			Badges.validateItemLevelAquired( weapon );
 		}
@@ -361,7 +360,7 @@ public class Belongings implements Iterable<Item> {
 			case 4:
 				equipped[4] = ring = null;
 				break;
-                        case 5:
+			case 5:
 				equipped[5] = offhand = null;
 				break;
 			default:
