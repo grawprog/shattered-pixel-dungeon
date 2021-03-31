@@ -93,7 +93,7 @@ public class MeleeWeapon extends Weapon {
 		String info = desc();
 
 		if (levelKnown) {
-			if (offhand) {
+			if (this == Dungeon.hero.belongings.offhand) {
 				info += "\n\n" + Messages.get(MeleeWeapon.class, "offhand_stats_known",  augment.damageFactor(offMin(Dungeon.hero)), augment.damageFactor(offMax(Dungeon.hero)), STRReq()+getOffhandPenalty(Dungeon.hero), DEXReq()+getOffhandPenalty(Dungeon.hero));
 				if (STRReq() > Dungeon.hero.STR()+offhandPenalty) {
 					info += " " + Messages.get(Weapon.class, "offhand_too_heavy");
@@ -120,7 +120,7 @@ public class MeleeWeapon extends Weapon {
 				}
 			}
 		} else {
-			if (offhand){
+			if (this == Dungeon.hero.belongings.offhand){
 				info += "\n\n" + Messages.get(MeleeWeapon.class, "offhand_stats_unknown", offMin(Dungeon.hero, 0), offMax(Dungeon.hero, 0), STRReq(0)+getOffhandPenalty(Dungeon.hero), DEXReq(0)+getOffhandPenalty(Dungeon.hero));
 				if (STRReq(0) > Dungeon.hero.STR()) {
 					info += " " + Messages.get(MeleeWeapon.class, "offhand_probably_too_heavy");

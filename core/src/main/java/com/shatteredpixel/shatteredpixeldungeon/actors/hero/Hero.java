@@ -172,7 +172,7 @@ public class Hero extends Char {
 
 	public boolean resting = false;
 
-	public Belongings belongings;
+	//public Belongings belongings;
 
 	public int STR;
 	public int DEX;

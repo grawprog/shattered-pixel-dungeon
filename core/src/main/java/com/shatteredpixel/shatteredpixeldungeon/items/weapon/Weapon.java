@@ -190,7 +190,7 @@ abstract public class Weapon extends KindOfWeapon {
 		float ACC = this.ACC;
 		if( owner instanceof Hero ){
 			encumbrance = STRReq() - ((Hero)owner).STR();
-			if (offhand){
+			if (this == owner.belongings.offhand){
 				ACC += ((((Hero)owner).DEX() -(float) 10)/2) - (float) getOffhandPenalty(owner);
 			}
 			else {
@@ -213,7 +213,7 @@ abstract public class Weapon extends KindOfWeapon {
 		float DLY = augment.delayFactor(this.DLY);
 		if (owner instanceof Hero) {
 			encumbrance = STRReq() - ((Hero)owner).STR();
-			if (offhand){
+			if (this == owner.belongings.offhand){
 				DLY += ((((Hero)owner).DEX()-(float)10)/2) - getOffhandPenalty(owner);
 			}
 			else {
