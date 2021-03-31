@@ -77,8 +77,23 @@ public class Pickaxe extends Weapon {
 	}
 
 	@Override
+	public int offMin(Char owner, int lvl) {
+		return 2-getOffhandPenalty(owner);   //tier 2
+	}
+
+	@Override
+	public int offMax(Char owner, int lvl) {
+		return 15-getOffhandPenalty(owner);  //tier 2
+	}
+
+	@Override
 	public int STRReq(int lvl) {
-		return STRReq(3, lvl); //tier 3
+		return STRReq(13, lvl); //tier 3
+	}
+
+	@Override
+	public int DEXReq(int lvl) {
+		return DEXReq(10, lvl); //tier 3
 	}
 
 	@Override

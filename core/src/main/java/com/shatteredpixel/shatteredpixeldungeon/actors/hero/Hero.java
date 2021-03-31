@@ -150,7 +150,7 @@ public class Hero extends Char {
 	public static final int STARTING_DEX = 10;
 	public static final int STARTING_WIS = 10;
 	public static final int STARTING_VIT = 10;
-	public static final int STARTING_STATPOINTS = 1;
+	public static final int STARTING_STATPOINTS = 0;
 
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
@@ -238,6 +238,24 @@ public class Hero extends Char {
 		return STR;
 	}
 
+	@Override
+	public int DEX() {
+		return this.DEX;
+	}
+
+	public int WIS() {
+		return this.WIS;
+	}
+
+	public int VIT() {
+		return this.VIT;
+	}
+
+	public int STATPOINTS(){
+		int STATPOINTS = this.STATPOINTS;
+		return STATPOINTS;
+	}
+
 	public int setSTR(int s) {
 		this.STR = s;
 		return this.STR;
@@ -291,25 +309,7 @@ public class Hero extends Char {
 		this.setSTATPOINTS(this.STATPOINTS+1);
 		return this.STATPOINTS;
 	}
-	public int DEX() {
-		int DEX = this.DEX;
-		return DEX;
-	}
 
-	public int WIS() {
-		int WIS = this.WIS;
-		return WIS;
-	}
-
-	public int VIT() {
-		int VIT = this.VIT;
-		return VIT;
-	}
-
-	public int STATPOINTS(){
-		int STATPOINTS = this.STATPOINTS;
-		return STATPOINTS;
-	}
 
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
@@ -569,6 +569,13 @@ public class Hero extends Char {
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
+		if (belongings.offhand != null) {
+			int wepDr = Random.NormalIntRange( 0 , belongings.offhand.defenseFactor( this ) );
+			if (STR() < ((Weapon)belongings.offhand).STRReq() + ((Weapon) belongings.offhand).getOffhandPenalty(this)){
+				wepDr -= 2*(((Weapon)belongings.offhand).STRReq() - STR());
+			}
+			if (wepDr > 0) dr += wepDr;
+		}
 		Barkskin bark = buff(Barkskin.class);
 		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
 		
@@ -585,6 +592,7 @@ public class Hero extends Char {
 	@Override
 	public int damageRoll() {
 		KindOfWeapon wep = belongings.weapon;
+		KindOfWeapon offwep = belongings.offhand;
 		int dmg;
 
 		if (wep != null) {
@@ -592,6 +600,10 @@ public class Hero extends Char {
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
 			dmg = RingOfForce.damageRoll(this);
+		}
+		if (offwep != null){
+			dmg += offwep.damageRoll( this );
+			dmg += RingOfForce.armedDamageBonus(this);
 		}
 		if (dmg < 0) dmg = 0;
 		

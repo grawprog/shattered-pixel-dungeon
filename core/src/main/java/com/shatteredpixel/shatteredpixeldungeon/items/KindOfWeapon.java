@@ -43,6 +43,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	protected String hitSound = Assets.Sounds.HIT;
 	protected float hitSoundPitch = 1f;
 	public boolean offhand = false;
+	protected int offhandPenalty = 2;
 
 	@Override
 	public ArrayList<String> actions(Hero hero ) {
@@ -52,6 +53,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 			actions.add(AC_OFFHAND);
 		}
 		return actions;
+	}
+
+	public int getOffhandPenalty(Char owner){
+		return offhandPenalty;
 	}
 
 	@Override
@@ -160,7 +165,21 @@ abstract public class KindOfWeapon extends EquipableItem {
 	abstract public int min(int lvl);
 	abstract public int max(int lvl);
 
+	public int offMin(Char owner){
+		return offMin(owner, buffedLvl());
+	}
+
+	public int offMax(Char owner){
+		return offMax(owner, buffedLvl());
+	}
+
+	abstract public int offMin(Char owner, int lvl);
+	abstract public int offMax(Char owner, int lvl);
+
 	public int damageRoll( Char owner ) {
+		if (offhand){
+			return Random.NormalIntRange( offMin(owner), offMax(owner) );
+		}
 		return Random.NormalIntRange( min(), max() );
 	}
 	

@@ -132,6 +132,7 @@ public enum HeroClass {
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
 		Shortsword sword2 = new Shortsword();
+		sword2.identify();
 		sword2.collect();
 		Dungeon.quickslot.setSlot(0, stones);
 

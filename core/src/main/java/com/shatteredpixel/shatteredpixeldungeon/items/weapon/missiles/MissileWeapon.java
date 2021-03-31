@@ -92,11 +92,35 @@ abstract public class MissileWeapon extends Weapon {
 		return  5 * tier +                      //base
 				(tier == 1 ? 2*lvl : tier*lvl); //level scaling
 	}
-	
-	public int STRReq(int lvl){
-		return STRReq(tier, lvl) - 1; //1 less str than normal for their tier
+
+	//offhand missile weapons suffer no penalties because of their use as ammo
+
+	@Override
+	public int offMin(Char owner) {
+		return min();
 	}
-	
+
+	@Override
+	public int offMin(Char owner, int lvl) {
+		return  min(lvl);
+	}
+
+	@Override
+	public int offMax(Char owner) {
+		return max();
+	}
+
+	@Override
+	public int offMax(Char owner, int lvl) {
+		return  max(lvl);
+	}
+
+	public int STRReq(int lvl){
+		return STRReq(tier, lvl); //1 less str than normal for their tier
+	}
+	public int DEXReq(int lvl){
+		return DEXReq(tier, lvl); //1 less str than normal for their tier
+	}
 	@Override
 	//FIXME some logic here assumes the items are in the player's inventory. Might need to adjust
 	public Item upgrade() {

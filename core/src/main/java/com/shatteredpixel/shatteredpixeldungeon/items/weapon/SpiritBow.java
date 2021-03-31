@@ -131,6 +131,11 @@ public class SpiritBow extends Weapon {
 	public int STRReq(int lvl) {
 		return STRReq(1, lvl); //tier 1
 	}
+
+	@Override
+	public int DEXReq(int lvl){
+		return DEXReq(1, lvl); //1 less str than normal for their tier
+	}
 	
 	@Override
 	public int min(int lvl) {
@@ -144,6 +149,27 @@ public class SpiritBow extends Weapon {
 		return 6 + (int)(Dungeon.hero.lvl/2.5f)
 				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 2 : 0);
+	}
+
+	//no penalty for offhand bows as bows can't be wielded offhand
+	@Override
+	public int offMin(Char owner) {
+		return min();
+	}
+
+	@Override
+	public int offMin(Char owner, int lvl) {
+		return  min(lvl);
+	}
+
+	@Override
+	public int offMax(Char owner) {
+		return max();
+	}
+
+	@Override
+	public int offMax(Char owner, int lvl) {
+		return  max(lvl);
 	}
 
 	@Override

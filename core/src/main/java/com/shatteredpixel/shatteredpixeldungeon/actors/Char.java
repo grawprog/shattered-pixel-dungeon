@@ -127,6 +127,8 @@ public abstract class Char extends Actor {
 	public boolean[] fieldOfView = null;
 	
 	private HashSet<Buff> buffs = new HashSet<>();
+
+	public int DEX(){return 10;}
 	
 	@Override
 	protected boolean act() {

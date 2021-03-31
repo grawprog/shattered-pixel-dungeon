@@ -69,6 +69,17 @@ abstract public class Weapon extends KindOfWeapon {
 	public float	DLY	= 1f;	// Speed modifier
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
+	protected enum HandType{
+		SMALL, //one hand only, offhand weapon can be equipped
+		ONEHAND, //can be used on handed or two handed for bonus dmg, offhand weapon can be equipped
+		TWOHAND, //can only be used two handed. equipping offhand weapon unequips
+		PAIR, //can only be used two handed. Does 2x min-max dmg with no offhand penalty. unequipped if offhand weapon equipped
+		RANGED, //can only be used two handed. can only shoot if appropiate ammo equipped offhand
+		AMMO; //can only be equipped in offhand slot. consumed when firing ranged weapons
+	}
+
+	public HandType handType = HandType.ONEHAND;
+
 	public enum Augment {
 		SPEED   (0.7f, 0.6667f),
 		DAMAGE  (1.5f, 1.6667f),
@@ -99,6 +110,10 @@ abstract public class Weapon extends KindOfWeapon {
 
 	protected static int baseStrReq = 10;
 	protected static int baseDexReq = 10;
+	protected int lvlScaleFactor = 1;
+	protected int dexScaleFactor = 1;
+	protected int strScaleFactor = 1;
+
 
 	public Enchantment enchantment;
 	public boolean curseInfusionBonus = false;
@@ -166,7 +181,8 @@ abstract public class Weapon extends KindOfWeapon {
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
 	}
-	
+
+
 	@Override
 	public float accuracyFactor( Char owner ) {
 		
@@ -174,7 +190,12 @@ abstract public class Weapon extends KindOfWeapon {
 		float ACC = this.ACC;
 		if( owner instanceof Hero ){
 			encumbrance = STRReq() - ((Hero)owner).STR();
-			ACC += ((((Hero)owner).DEX() -(float) 10)/2);
+			if (offhand){
+				ACC += ((((Hero)owner).DEX() -(float) 10)/2) - (float) getOffhandPenalty(owner);
+			}
+			else {
+				ACC += ((((Hero) owner).DEX() - (float) 10) / 2);
+			}
 		}
 
 		if (hasEnchant(Wayward.class, owner)) {
@@ -192,7 +213,12 @@ abstract public class Weapon extends KindOfWeapon {
 		float DLY = augment.delayFactor(this.DLY);
 		if (owner instanceof Hero) {
 			encumbrance = STRReq() - ((Hero)owner).STR();
-			DLY += ((((Hero)owner).DEX()-(float)10)/2);
+			if (offhand){
+				DLY += ((((Hero)owner).DEX()-(float)10)/2) - getOffhandPenalty(owner);
+			}
+			else {
+				DLY += ((((Hero) owner).DEX() - (float) 10) / 2);
+			}
 		}
 
 		DLY *= RingOfFuror.attackDelayMultiplier(owner);
@@ -221,15 +247,21 @@ abstract public class Weapon extends KindOfWeapon {
 
 		return req;
 	}
-	protected int DEXReq(int lvl){
+
+	public int DEXReq(){
+		return DEXReq(level());
+	}
+
+	public abstract int DEXReq(int lvl);
+
+	protected int DEXReq(int tier, int lvl){
 		lvl = Math.max(0, lvl);
 
 		//strength req decreases at +1,+3,+6,+10,etc.
-		int req = this.baseDexReq - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return this.baseDexReq - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 
 		//if (Dungeon.hero.pointsInTalent(Talent.STRONGMAN) >= 2) req--;
 
-		return req;
 	}
 	@Override
 	public int level() {

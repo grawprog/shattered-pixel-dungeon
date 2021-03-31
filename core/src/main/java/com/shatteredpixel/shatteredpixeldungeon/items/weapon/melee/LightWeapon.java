@@ -1,14 +1,18 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+
 public class LightWeapon extends MeleeWeapon {
     {
         dexScaleFactor = 5;
         strScaleFactor = 1;
+        baseStrReq = 9;
+        baseDexReq = 11;
     }
 
-    /* this is not correct need to figure out what's up when more sober
+
     @Override
-    public int getOffhandPenalty(){
-        return hero.DEX() - this.DEXReq(this.level()) + super.getOffhandPenalty(this.);
-    }*/
+    public int getOffhandPenalty(Char owner){
+        return owner.DEX() - this.DEXReq(this.level()) + super.getOffhandPenalty(owner);
+    }
 }

@@ -32,10 +32,7 @@ public class MeleeWeapon extends Weapon {
 
 	protected int baseMin = 1;
 	protected int baseMax = 6;
-	protected int lvlScaleFactor = 1;
-	protected int dexScaleFactor = 1;
-	protected int strScaleFactor = 1;
-	protected int offhandPenalty = 2;
+
 	public int tier;
 
 
@@ -44,13 +41,14 @@ public class MeleeWeapon extends Weapon {
 		return  baseMin +  //base
 				lvl;    //level scaling
 	}
-	public int getOffhandPenalty(){
-		return offhandPenalty;
+	public int getOffhandPenalty(Char owner){
+		return super.getOffhandPenalty(owner);
 	}
 
-	public int offMin(int lvl) {
+	@Override
+	public int offMin(Char owner, int lvl) {
 		int offmin = this.min(lvl);
-		offmin -= getOffhandPenalty();
+		offmin -= getOffhandPenalty(owner);
 		if (offmin < 0) {
 			offmin = 0;
 		}
@@ -61,9 +59,10 @@ public class MeleeWeapon extends Weapon {
 		return  baseMax +    //base
 				lvl*lvlScaleFactor;   //level scaling
 	}
-	public int offMax(int lvl) {
+	@Override
+	public int offMax(Char owner, int lvl) {
 		int offmax = this.max(lvl);
-		offmax -= getOffhandPenalty()*2;
+		offmax -= getOffhandPenalty(owner)*strScaleFactor-getOffhandPenalty(owner);
 		if (offmax < 0) {
 			offmax = 0;
 		}
@@ -72,11 +71,12 @@ public class MeleeWeapon extends Weapon {
 	public int STRReq(int lvl){
 		return STRReq(baseStrReq, lvl);
 	}
-	
+	public int DEXReq(int lvl){
+		return DEXReq(baseDexReq, lvl);
+	}
 	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
-
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
 			if (exStr > 0) {
@@ -93,16 +93,50 @@ public class MeleeWeapon extends Weapon {
 		String info = desc();
 
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
-			if (STRReq() > Dungeon.hero.STR()) {
-				info += " " + Messages.get(Weapon.class, "too_heavy");
-			} else if (Dungeon.hero.STR() > STRReq()){
-				info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+			if (offhand) {
+				info += "\n\n" + Messages.get(MeleeWeapon.class, "offhand_stats_known",  augment.damageFactor(offMin(Dungeon.hero)), augment.damageFactor(offMax(Dungeon.hero)), STRReq()+getOffhandPenalty(Dungeon.hero), DEXReq()+getOffhandPenalty(Dungeon.hero));
+				if (STRReq() > Dungeon.hero.STR()+offhandPenalty) {
+					info += " " + Messages.get(Weapon.class, "offhand_too_heavy");
+				} else if (Dungeon.hero.STR() > STRReq()+offhandPenalty){
+					info += " " + Messages.get(Weapon.class, "offhand_excess_str", Dungeon.hero.STR() - (STRReq()+getOffhandPenalty(Dungeon.hero)));
+				}
+				if (DEXReq() > Dungeon.hero.DEX()+offhandPenalty) {
+					info += " " + Messages.get(Weapon.class, "offhand_too_slow");
+				} else if (Dungeon.hero.DEX() > DEXReq()+offhandPenalty){
+					info += " " + Messages.get(Weapon.class, "offhand_excess_dex", Dungeon.hero.DEX() - (DEXReq()+getOffhandPenalty(Dungeon.hero)));
+				}
+			}
+			else {
+				info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", augment.damageFactor(min()), augment.damageFactor(max()), STRReq(), DEXReq());
+				if (STRReq() > Dungeon.hero.STR()) {
+					info += " " + Messages.get(Weapon.class, "too_heavy");
+				} else if (Dungeon.hero.STR() > STRReq()) {
+					info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
+				}
+				if (DEXReq() > Dungeon.hero.DEX()) {
+					info += " " + Messages.get(Weapon.class, "too_slow");
+				} else if (Dungeon.hero.DEX() > DEXReq()) {
+					info += " " + Messages.get(Weapon.class, "excess_dex", Dungeon.hero.DEX() - DEXReq());
+				}
 			}
 		} else {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
-			if (STRReq(0) > Dungeon.hero.STR()) {
-				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
+			if (offhand){
+				info += "\n\n" + Messages.get(MeleeWeapon.class, "offhand_stats_unknown", offMin(Dungeon.hero, 0), offMax(Dungeon.hero, 0), STRReq(0)+getOffhandPenalty(Dungeon.hero), DEXReq(0)+getOffhandPenalty(Dungeon.hero));
+				if (STRReq(0) > Dungeon.hero.STR()) {
+					info += " " + Messages.get(MeleeWeapon.class, "offhand_probably_too_heavy");
+				}
+				if (DEXReq(0) > Dungeon.hero.DEX()) {
+					info += " " + Messages.get(MeleeWeapon.class, "offhand_probably_too_slow");
+				}
+			}
+			else {
+				info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", min(0), max(0), STRReq(0), DEXReq(0));
+				if (STRReq(0) > Dungeon.hero.STR()) {
+					info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
+				}
+				if (DEXReq(0) > Dungeon.hero.DEX()) {
+					info += " " + Messages.get(MeleeWeapon.class, "probably_too_slow");
+				}
 			}
 		}
 
