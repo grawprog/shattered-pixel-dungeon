@@ -69,7 +69,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public float	DLY	= 1f;	// Speed modifier
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
-	protected enum HandType{
+	public enum HandType{
 		SMALL, //one hand only, offhand weapon can be equipped
 		ONEHAND, //can be used on handed or two handed for bonus dmg, offhand weapon can be equipped
 		TWOHAND, //can only be used two handed. equipping offhand weapon unequips
