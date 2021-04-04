@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -246,7 +247,18 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
 		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
-		placeItem( stuff.offhand != null ? stuff.offhand : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
+		if (stuff.offhand == null){
+			if (stuff.weapon instanceof Weapon){
+				if (((Weapon) stuff.weapon).handType == Weapon.HandType.PAIR || ((Weapon) stuff.weapon).handType == Weapon.HandType.TWOHAND ){
+					placeItem(stuff.weapon);
+				}
+			}
+			else placeItem(new Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
+		}
+		else {
+			placeItem(stuff.offhand);
+		}
+
 
 		//the container itself if it's not the root backpack
 		if (container != Dungeon.hero.belongings.backpack){

@@ -69,16 +69,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public float	DLY	= 1f;	// Speed modifier
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
-	public enum HandType{
-		SMALL, //one hand only, offhand weapon can be equipped
-		ONEHAND, //can be used on handed or two handed for bonus dmg, offhand weapon can be equipped
-		TWOHAND, //can only be used two handed. equipping offhand weapon unequips
-		PAIR, //can only be used two handed. Does 2x min-max dmg with no offhand penalty. unequipped if offhand weapon equipped
-		RANGED, //can only be used two handed. can only shoot if appropiate ammo equipped offhand
-		AMMO; //can only be equipped in offhand slot. consumed when firing ranged weapons
-	}
 
-	public HandType handType = HandType.ONEHAND;
 
 	public enum Augment {
 		SPEED   (0.7f, 0.6667f),
@@ -110,9 +101,9 @@ abstract public class Weapon extends KindOfWeapon {
 
 	protected static int baseStrReq = 10;
 	protected static int baseDexReq = 10;
-	protected int lvlScaleFactor = 1;
-	protected int dexScaleFactor = 1;
-	protected int strScaleFactor = 1;
+	protected float lvlScaleFactor = 1;
+	protected float dexScaleFactor = 1;
+	protected float strScaleFactor = 1;
 
 
 	public Enchantment enchantment;
@@ -191,10 +182,10 @@ abstract public class Weapon extends KindOfWeapon {
 		if( owner instanceof Hero ){
 			encumbrance = STRReq() - ((Hero)owner).STR();
 			if (this == owner.belongings.offhand){
-				ACC += ((((Hero)owner).DEX() -(float) 10)/2) - (float) getOffhandPenalty(owner);
+				ACC += ((((Hero)owner).DEX() -(float) baseDexReq)/2) - (float) getOffhandPenalty(owner);
 			}
 			else {
-				ACC += ((((Hero) owner).DEX() - (float) 10) / 2);
+				ACC += ((((Hero) owner).DEX() - (float) baseDexReq) / 2);
 			}
 		}
 
@@ -214,10 +205,10 @@ abstract public class Weapon extends KindOfWeapon {
 		if (owner instanceof Hero) {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 			if (this == owner.belongings.offhand){
-				DLY += ((((Hero)owner).DEX()-(float)10)/2) - getOffhandPenalty(owner);
+				DLY += ((((Hero)owner).DEX()-(float)baseDexReq)/2) - getOffhandPenalty(owner);
 			}
 			else {
-				DLY += ((((Hero) owner).DEX() - (float) 10) / 2);
+				DLY += ((((Hero) owner).DEX() - (float) baseDexReq) / 2);
 			}
 		}
 

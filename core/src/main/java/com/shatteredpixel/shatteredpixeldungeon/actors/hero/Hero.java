@@ -598,6 +598,9 @@ public class Hero extends Char {
 		if (wep != null) {
 			dmg = wep.damageRoll( this );
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
+			if(wep.handType == KindOfWeapon.HandType.PAIR){
+				dmg += wep.damageRoll(this) + RingOfForce.armedDamageBonus(this);;
+			}
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 		}

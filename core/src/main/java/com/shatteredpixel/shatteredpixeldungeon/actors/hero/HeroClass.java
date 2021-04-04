@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
@@ -134,6 +135,9 @@ public enum HeroClass {
 		Shortsword sword2 = new Shortsword();
 		sword2.identify();
 		sword2.collect();
+		Sai sai = new Sai();
+		sai.identify();
+		sai.collect();
 		Dungeon.quickslot.setSlot(0, stones);
 
 		if (hero.belongings.armor != null){

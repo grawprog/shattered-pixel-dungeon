@@ -40,6 +40,17 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	protected static final float TIME_TO_EQUIP = 1f;
 
+	public enum HandType{
+		SMALL, //one hand only, offhand weapon can be equipped
+		ONEHAND, //can be used on handed or two handed for bonus dmg, offhand weapon can be equipped
+		TWOHAND, //can only be used two handed. equipping offhand weapon unequips
+		PAIR, //can only be used two handed. Does 2x min-max dmg with no offhand penalty. unequipped if offhand weapon equipped
+		RANGED, //can only be used two handed. can only shoot if appropiate ammo equipped offhand
+		AMMO; //can only be equipped in offhand slot. consumed when firing ranged weapons
+	}
+
+	public HandType handType = HandType.ONEHAND;
+
 	protected String hitSound = Assets.Sounds.HIT;
 	protected float hitSoundPitch = 1f;
 	//public boolean offhand = false;
@@ -50,7 +61,12 @@ abstract public class KindOfWeapon extends EquipableItem {
 		ArrayList<String> actions = super.actions( hero );
 		//actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP);
 		if (!isEquipped(hero)){
-			actions.add(AC_OFFHAND);
+			if(handType != HandType.PAIR || handType != HandType.TWOHAND) {
+				actions.add(AC_OFFHAND);
+			}
+			if(handType == HandType.PAIR || handType == HandType.TWOHAND){
+				actions.remove(AC_OFFHAND);
+			}
 		}
 		return actions;
 	}
@@ -115,6 +131,9 @@ abstract public class KindOfWeapon extends EquipableItem {
 		if (hero.belongings.offhand == null || hero.belongings.offhand.doUnequip( hero, true )) {
 
 			hero.belongings.offhand = this;
+			if(hero.belongings.weapon.handType == HandType.PAIR || hero.belongings.weapon.handType == HandType.TWOHAND){
+				hero.belongings.weapon = null;
+			}
 			activate( hero );
 			Talent.onItemEquipped(hero, this);
 			updateQuickslot();

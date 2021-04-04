@@ -57,7 +57,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public int max(int lvl) {
 		return  baseMax +    //base
-				lvl*lvlScaleFactor;   //level scaling
+				Math.round(lvl*(float)lvlScaleFactor);   //level scaling
 	}
 	@Override
 	public int offMax(Char owner, int lvl) {

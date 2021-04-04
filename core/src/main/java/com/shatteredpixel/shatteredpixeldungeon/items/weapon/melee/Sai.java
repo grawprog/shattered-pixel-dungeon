@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sai extends MeleeWeapon {
@@ -30,15 +31,21 @@ public class Sai extends MeleeWeapon {
 		image = ItemSpriteSheet.SAI;
 		hitSound = Assets.Sounds.HIT_STAB;
 		hitSoundPitch = 1.3f;
+		handType = HandType.PAIR;
+		baseMax = 4;
+		baseDexReq = 12;
+		strScaleFactor = 0.5f;
+		dexScaleFactor = 2;
 
-		tier = 3;
+		tier = 1;
 		DLY = 0.5f; //2x speed
+		offhandPenalty = 0;
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  Math.round(2.5f*(tier+1)) +     //10 base, down from 20
-				lvl*Math.round(0.5f*(tier+1));  //+2 per level, down from +4
+		return  Math.round(baseMax * dexScaleFactor + Dungeon.hero.DEX() - baseDexReq + Dungeon.hero.STR() - baseStrReq) +     //10 base, down from 20
+				lvl*Math.round(lvlScaleFactor);  //+2 per level, down from +4
 	}
 
 }
