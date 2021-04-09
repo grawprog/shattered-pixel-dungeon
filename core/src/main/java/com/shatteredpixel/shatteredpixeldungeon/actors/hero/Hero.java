@@ -187,6 +187,7 @@ public class Hero extends Char {
 
 	public int HTBoost = 0;
 
+
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped

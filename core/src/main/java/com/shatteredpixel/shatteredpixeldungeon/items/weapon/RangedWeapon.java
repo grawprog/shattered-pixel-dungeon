@@ -21,48 +21,60 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Callback;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Random;
 
-public class SpiritBow extends RangedWeapon {
+import java.util.ArrayList;
+
+public abstract class RangedWeapon extends MeleeWeapon {
+
+	public static final String AC_AMMO = "CHOOSE AMMO";
+	public static final String AC_UNAMMO = "REMOVE AMMO";
 	
 	public static final String AC_SHOOT		= "SHOOT";
 	
 	{
-		image = ItemSpriteSheet.SPIRIT_BOW;
+
+
+		defaultAction = AC_EQUIP;
+
+
+		handType = HandType.TWOHAND;
 
 		usesTargeting = true;
-		
-		unique = true;
-		bones = false;
-		sniperSpecial = false;
-		sniperSpecialBonusDamage = 0f;
+
 	}
 	
+	public boolean sniperSpecial = false;
+	public float sniperSpecialBonusDamage = 0f;
+	public MissileWeapon ammo;
+	public MissileWeapon.AmmoType ammoType = MissileWeapon.AmmoType.ARROW;
 
 	@Override
-	protected void onItemSelected(MissileWeapon item){
-		ammo = item;
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if(handType == HandType.TWOHAND) {
+			actions.remove(AC_OFFHAND);
+		}
+		if(isEquipped(hero)) {
+			actions.remove(AC_EQUIP);
+			actions.add(AC_SHOOT);
+			//actions.add(AC_UNEQUIP);
+		}
+		actions.add(AC_AMMO);
+		return actions;
 	}
-
 	
 	@Override
 	public void execute(Hero hero, String action) {
@@ -76,13 +88,79 @@ public class SpiritBow extends RangedWeapon {
 			GameScene.selectCell( shooter );
 			
 		}
+		if (action.equals(AC_EQUIP)) {
+			defaultAction = AC_SHOOT;
+		}
+		if (action.equals(AC_UNEQUIP)) {
+			defaultAction = AC_EQUIP;
+		}
+		if (action.equals(AC_AMMO)){
+			doAmmo();
+		}
+		if (action.equals(AC_UNAMMO)){
+			ammo = null;
+		}
 	}
-	
+
+	protected void doAmmo(){
+		String inventoryTitle = Messages.get(this, "inv_title");
+		WndBag.Mode mode = WndBag.Mode.AMMO_NONE;
+		switch (ammoType){
+			case NONE:
+				mode = WndBag.Mode.AMMO_NONE;
+				break;
+			case STONE:
+				mode = WndBag.Mode.AMMO_STONE;
+				break;
+			case SPEAR:
+				mode = WndBag.Mode.AMMO_SPEAR;
+				break;
+			case DART:
+				mode = WndBag.Mode.AMMO_DART;
+				break;
+			case ARROW:
+				mode = WndBag.Mode.AMMO_ARROW;
+				break;
+			case BOLT:
+				mode = WndBag.Mode.AMMO_BOLT;
+				break;
+			case BULLET:
+				mode = WndBag.Mode.AMMO_BULLET;
+				break;
+			case SHELL:
+				mode = WndBag.Mode.AMMO_SHELL;
+				break;
+		}
+		GameScene.selectItem(itemSelector, mode, inventoryTitle);
+	}
+
+	protected abstract void onItemSelected( MissileWeapon item );
+
+	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+		@Override
+		public void onSelect( Item item ) {
+
+			//FIXME this safety check shouldn't be necessary
+			//it would be better to eliminate the curItem static variable.
+			if (!(curItem instanceof RangedWeapon)){
+				return;
+			}
+
+			if (item instanceof MissileWeapon && item !=null) {
+
+				((RangedWeapon) curItem).ammo = ((MissileWeapon) item);
+
+			} else{
+				curItem.collect( curUser.belongings.backpack );
+			}
+		}
+	};
+
 	@Override
 	public String info() {
 		String info = desc();
 		
-		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
+		info += "\n\n" + Messages.get( RangedWeapon.class, "stats",
 				Math.round(augment.damageFactor(min())),
 				Math.round(augment.damageFactor(max())),
 				STRReq());
@@ -168,7 +246,7 @@ public class SpiritBow extends RangedWeapon {
 
 	@Override
 	public int targetingPos(Hero user, int dst) {
-		return knockArrow().targetingPos(user, dst);
+		return 1;//knockArrow().targetingPos(user, dst);
 	}
 	
 	private int targetPos;
@@ -233,149 +311,18 @@ public class SpiritBow extends RangedWeapon {
 		//level isn't affected by buffs/debuffs
 		return level();
 	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	public SpiritArrow knockArrow(){
-		return new SpiritArrow();
-	}
-	
-	public class SpiritArrow extends MissileWeapon {
-		
-		{
-			image = ItemSpriteSheet.SPIRIT_ARROW;
 
-			hitSound = Assets.Sounds.HIT_ARROW;
-		}
-		
+	
+	protected CellSelector.Listener shooter = new CellSelector.Listener() {
 		@Override
-		public int damageRoll(Char owner) {
-			return SpiritBow.this.damageRoll(owner);
-		}
-		
-		@Override
-		public boolean hasEnchant(Class<? extends Enchantment> type, Char owner) {
-			return SpiritBow.this.hasEnchant(type, owner);
-		}
-		
-		@Override
-		public int proc(Char attacker, Char defender, int damage) {
-			return SpiritBow.this.proc(attacker, defender, damage);
-		}
-		
-		@Override
-		public float speedFactor(Char user) {
-			return SpiritBow.this.speedFactor(user);
-		}
-		
-		@Override
-		public float accuracyFactor(Char owner) {
-			if (sniperSpecial && SpiritBow.this.augment == Augment.DAMAGE){
-				return Float.POSITIVE_INFINITY;
-			} else {
-				return super.accuracyFactor(owner);
+		public void onSelect( Integer target ) {
+			if (target != null) {
+				//knockArrow().cast(curUser, target);
 			}
 		}
-		
 		@Override
-		public int STRReq(int lvl) {
-			return SpiritBow.this.STRReq(lvl);
+		public String prompt() {
+			return Messages.get(RangedWeapon.class, "prompt");
 		}
-
-		@Override
-		protected void onThrow( int cell ) {
-			Char enemy = Actor.findChar( cell );
-			if (enemy == null || enemy == curUser) {
-				parent = null;
-				Splash.at( cell, 0xCC99FFFF, 1 );
-			} else {
-				if (!curUser.shoot( enemy, this )) {
-					Splash.at(cell, 0xCC99FFFF, 1);
-				}
-				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
-			}
-		}
-
-		@Override
-		public void throwSound() {
-			Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW, 1, Random.Float(0.87f, 1.15f) );
-		}
-
-		int flurryCount = -1;
-		
-		@Override
-		public void cast(final Hero user, final int dst) {
-			final int cell = throwPos( user, dst );
-			SpiritBow.this.targetPos = cell;
-			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
-				if (flurryCount == -1) flurryCount = 3;
-				
-				final Char enemy = Actor.findChar( cell );
-				
-				if (enemy == null){
-					user.spendAndNext(castDelay(user, dst));
-					sniperSpecial = false;
-					flurryCount = -1;
-					return;
-				}
-				QuickSlotButton.target(enemy);
-				
-				final boolean last = flurryCount == 1;
-				
-				user.busy();
-				
-				throwSound();
-				
-				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
-						reset(user.sprite,
-								cell,
-								this,
-								new Callback() {
-									@Override
-									public void call() {
-										if (enemy.isAlive()) {
-											curUser = user;
-											onThrow(cell);
-										}
-										
-										if (last) {
-											user.spendAndNext(castDelay(user, dst));
-											sniperSpecial = false;
-											flurryCount = -1;
-										}
-									}
-								});
-				
-				user.sprite.zap(cell, new Callback() {
-					@Override
-					public void call() {
-						flurryCount--;
-						if (flurryCount > 0){
-							cast(user, dst);
-						}
-					}
-				});
-				
-			} else {
-
-				if (user.hasTalent(Talent.SEER_SHOT)
-						&& user.buff(Talent.SeerShotCooldown.class) == null){
-					int shotPos = throwPos(user, dst);
-					if (Actor.findChar(shotPos) == null) {
-						RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
-						a.depth = Dungeon.depth;
-						a.pos = shotPos;
-						Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
-					}
-				}
-
-				super.cast(user, dst);
-			}
-		}
-	}
-	
-
+	};
 }

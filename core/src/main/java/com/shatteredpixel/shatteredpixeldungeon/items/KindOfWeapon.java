@@ -104,6 +104,12 @@ abstract public class KindOfWeapon extends EquipableItem {
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
 			
 			hero.belongings.weapon = this;
+			if(hero.belongings.offhand != null){
+				if (handType == HandType.PAIR || handType == HandType.TWOHAND){
+					hero.belongings.offhand.collect();
+					hero.belongings.offhand = null;
+				}
+			}
 			activate( hero );
 			Talent.onItemEquipped(hero, this);
 			updateQuickslot();
@@ -132,6 +138,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 			hero.belongings.offhand = this;
 			if(hero.belongings.weapon.handType == HandType.PAIR || hero.belongings.weapon.handType == HandType.TWOHAND){
+				hero.belongings.weapon.collect();
 				hero.belongings.weapon = null;
 			}
 			activate( hero );

@@ -94,6 +94,14 @@ public class WndBag extends WndTabbed {
 		TRANMSUTABLE,
 		ALCHEMY,
 		RECYCLABLE,
+		AMMO_NONE,
+		AMMO_STONE,
+		AMMO_SPEAR,
+		AMMO_DART,
+		AMMO_ARROW,
+		AMMO_BOLT,
+		AMMO_BULLET,
+		AMMO_SHELL,
 		NOT_EQUIPPED
 	}
 
@@ -247,17 +255,21 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
 		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
-		if (stuff.offhand == null){
-			if (stuff.weapon instanceof Weapon){
-				if (((Weapon) stuff.weapon).handType == Weapon.HandType.PAIR || ((Weapon) stuff.weapon).handType == Weapon.HandType.TWOHAND ){
+		if (stuff.offhand == null) {
+			if (stuff.weapon instanceof Weapon) {
+				if (((Weapon) stuff.weapon).handType == Weapon.HandType.PAIR || ((Weapon) stuff.weapon).handType == Weapon.HandType.TWOHAND) {
 					placeItem(stuff.weapon);
+				} else {
+					placeItem(new Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
 				}
+			} else{
+				placeItem(new Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
 			}
-			else placeItem(new Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
 		}
-		else {
-			placeItem(stuff.offhand);
-		}
+		else{
+				placeItem(stuff.offhand);
+			}
+
 
 
 		//the container itself if it's not the root backpack
@@ -463,6 +475,14 @@ public class WndBag extends WndTabbed {
 						mode == Mode.TRANMSUTABLE && ScrollOfTransmutation.canTransmute(item) ||
 						mode == Mode.NOT_EQUIPPED && !item.isEquipped(Dungeon.hero) ||
 						mode == Mode.RECYCLABLE && Recycle.isRecyclable(item) ||
+						mode == Mode.AMMO_NONE && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.NONE ||
+						mode == Mode.AMMO_STONE && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.STONE ||
+						mode == Mode.AMMO_SPEAR && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.SPEAR ||
+						mode == Mode.AMMO_DART && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.DART ||
+						mode == Mode.AMMO_ARROW && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.ARROW ||
+						mode == Mode.AMMO_BOLT && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.BOLT ||
+						mode == Mode.AMMO_BULLET && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.BULLET ||
+						mode == Mode.AMMO_SHELL && item instanceof MissileWeapon && ((MissileWeapon) item).ammoType == MissileWeapon.AmmoType.SHELL ||
 						mode == Mode.ALL
 					);
 				}

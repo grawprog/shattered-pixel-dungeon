@@ -48,6 +48,17 @@ import java.util.ArrayList;
 
 abstract public class MissileWeapon extends Weapon {
 
+	public static enum AmmoType{
+		NONE,
+		STONE,
+		SPEAR,
+		DART,
+		ARROW,
+		BOLT,
+		BULLET,
+		SHELL;
+	}
+
 	{
 		stackable = true;
 		levelKnown = true;
@@ -55,7 +66,7 @@ abstract public class MissileWeapon extends Weapon {
 		bones = true;
 
 		defaultAction = AC_THROW;
-		usesTargeting = true;
+		//usesTargeting = true;
 	}
 	
 	protected boolean sticky = true;
@@ -63,7 +74,7 @@ abstract public class MissileWeapon extends Weapon {
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
 	protected float baseUses = 10;
-	
+	public AmmoType ammoType = AmmoType.NONE;
 	public boolean holster;
 	
 	//used to reduce durability from the source weapon stack, rather than the one being thrown.
@@ -159,6 +170,8 @@ abstract public class MissileWeapon extends Weapon {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_EQUIP );
+
+
 		return actions;
 	}
 	
@@ -167,7 +180,11 @@ abstract public class MissileWeapon extends Weapon {
 		if (container instanceof MagicalHolster) holster = true;
 		return super.collect(container);
 	}
-	
+
+	public AmmoType getAmmoType(){
+		return ammoType;
+	}
+
 	@Override
 	public int throwPos(Hero user, int dst) {
 

@@ -1,3 +1,4 @@
+
 /*
  * Pixel Dungeon
  * Copyright (C) 2012-2015 Oleg Dolya
@@ -205,10 +206,10 @@ abstract public class Weapon extends KindOfWeapon {
 		if (owner instanceof Hero) {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 			if (this == owner.belongings.offhand){
-				DLY += ((((Hero)owner).DEX()-(float)baseDexReq)/2) - getOffhandPenalty(owner);
+				DLY -= ((((Hero)owner).DEX()-(float)baseDexReq)/2) + getOffhandPenalty(owner);
 			}
 			else {
-				DLY += ((((Hero) owner).DEX() - (float) baseDexReq) / 2);
+				DLY -= ((((Hero) owner).DEX() - (float) baseDexReq) / 2);
 			}
 		}
 
