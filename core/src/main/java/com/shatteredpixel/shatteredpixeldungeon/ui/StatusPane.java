@@ -57,7 +57,9 @@ public class StatusPane extends Component {
 	private Image rawShielding;
 	private Image shieldedHP;
 	private Image hp;
+	private Image mp;
 	private BitmapText hpText;
+	private BitmapText mpText;
 
 	private Image exp;
 
@@ -126,6 +128,13 @@ public class StatusPane extends Component {
 		hpText.alpha(0.6f);
 		add(hpText);
 
+		mp = new Image( Assets.Interfaces.MP_BAR );
+		add( mp );
+
+		mpText = new BitmapText(PixelScene.pixelFont);
+		mpText.alpha(0.6f);
+		add(mpText);
+
 		exp = new Image( Assets.Interfaces.XP_BAR );
 		add( exp );
 
@@ -172,11 +181,20 @@ public class StatusPane extends Component {
 		hp.x = shieldedHP.x = rawShielding.x = 30;
 		hp.y = shieldedHP.y = rawShielding.y = 3;
 
+		mp.x = 30;
+		mp.y = 8;
+
 		hpText.scale.set(PixelScene.align(0.5f));
 		hpText.x = hp.x + 1;
 		hpText.y = hp.y + (hp.height - (hpText.baseLine()+hpText.scale.y))/2f;
 		hpText.y -= 0.001f; //prefer to be slightly higher
 		PixelScene.align(hpText);
+
+		mpText.scale.set(PixelScene.align(0.5f));
+		mpText.x = mp.x + 1;
+		mpText.y = mp.y + (mp.height - (mpText.baseLine()+mpText.scale.y))/2f;
+		mpText.y -= 0.001f; //prefer to be slightly higher
+		PixelScene.align(mpText);
 
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
@@ -209,6 +227,9 @@ public class StatusPane extends Component {
 		int shield = Dungeon.hero.shielding();
 		int max = Dungeon.hero.HT;
 
+		int mana = Dungeon.hero.MP;
+		int max_mana = Dungeon.hero.MT;
+
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint(0x000000, 0.5f);
 		} else if ((health/(float)max) < 0.3f) {
@@ -232,6 +253,8 @@ public class StatusPane extends Component {
 			hpText.text(health + "+" + shield +  "/" + max);
 		}
 
+		mp.scale.x = Math.max( 0, mana/max_mana);
+		mpText.text(mana + "/" + max_mana);
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 
 		if (Dungeon.hero.lvl != lastLvl) {

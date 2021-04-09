@@ -130,7 +130,9 @@ public enum HeroClass {
 		hero.setVIT(11);
 		hero.setWIS(9);
 		hero.updateHT(false);
+		hero.updateMT();
 		hero.HP = hero.HT;
+		hero.MP = hero.MT;
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
 		Shortsword sword2 = new Shortsword();
@@ -163,7 +165,10 @@ public enum HeroClass {
 		hero.setSTR(11);
 		hero.setWIS(11);
 		hero.setDEX(9);
-
+		hero.updateHT(false);
+		hero.updateMT();
+		hero.HP = hero.HT;
+		hero.MP = hero.MT;
 		Dungeon.quickslot.setSlot(0, staff);
 
 		new ScrollHolder().collect();
@@ -186,6 +191,10 @@ public enum HeroClass {
 		hero.setDEX(11);
 		hero.setWIS(11);
 		hero.setSTR(9);
+		hero.updateHT(false);
+		hero.updateMT();
+		hero.HP = hero.HT;
+		hero.MP = hero.MT;
 
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
@@ -206,6 +215,10 @@ public enum HeroClass {
 		hero.setSTR(11);
 		hero.setDEX(11);
 		hero.setVIT(9);
+		hero.updateHT(false);
+		hero.updateMT();
+		hero.HP = hero.HT;
+		hero.MP = hero.MT;
 
 		Dungeon.quickslot.setSlot(0, bow);
 

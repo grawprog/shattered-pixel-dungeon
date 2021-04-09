@@ -78,6 +78,7 @@ public class Assets {
 		public static final String HP_BAR	= "interfaces/hp_bar.png";
 		public static final String SHLD_BAR = "interfaces/shield_bar.png";
 		public static final String XP_BAR	= "interfaces/exp_bar.png";
+		public static final String MP_BAR	= "interfaces/mp_bar.png";
 		public static final String TOOLBAR	= "interfaces/toolbar.png";
 		public static final String SHADOW   = "interfaces/shadow.png";
 		public static final String BOSSHP   = "interfaces/boss_hp.png";

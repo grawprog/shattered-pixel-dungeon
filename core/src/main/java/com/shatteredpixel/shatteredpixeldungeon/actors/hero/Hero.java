@@ -179,13 +179,18 @@ public class Hero extends Char {
 	public int WIS;
 	public int VIT;
 	public int STATPOINTS;
+	public int MT;
+	public int MP;
 
 	public float awareness;
 
 	public int lvl = 1;
 	public int exp = 0;
 
+
+
 	public int HTBoost = 0;
+	public int MTBoost = 0;
 
 
 	private ArrayList<Mob> visibleEnemies;
@@ -203,6 +208,8 @@ public class Hero extends Char {
 		WIS = STARTING_WIS;
 		VIT = STARTING_VIT;
 		HP = HT = VIT * 2;
+		MP = MT = WIS * 2;
+
 		STATPOINTS = STARTING_STATPOINTS;
 		belongings = new Belongings( this );
 
@@ -225,6 +232,13 @@ public class Hero extends Char {
 		}
 		HP = Math.min(HP, HT);
 	}
+
+	public void updateMT(){
+		int curMT = MT;
+		MT = (WIS * 2) + 5*(lvl-1);
+		MP = Math.min(MP, MT);
+	}
+
 
 	public int STR() {
 		int STR = this.STR;
