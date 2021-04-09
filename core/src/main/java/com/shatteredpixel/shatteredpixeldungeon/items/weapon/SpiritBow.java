@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
@@ -44,7 +43,7 @@ import com.watabou.utils.Random;
 
 public class SpiritBow extends RangedWeapon {
 	
-	public static final String AC_SHOOT		= "SHOOT";
+
 	
 	{
 		image = ItemSpriteSheet.SPIRIT_BOW;
@@ -68,14 +67,7 @@ public class SpiritBow extends RangedWeapon {
 	public void execute(Hero hero, String action) {
 		
 		super.execute(hero, action);
-		
-		if (action.equals(AC_SHOOT)) {
-			
-			curUser = hero;
-			curItem = this;
-			GameScene.selectCell( shooter );
-			
-		}
+
 	}
 	
 	@Override

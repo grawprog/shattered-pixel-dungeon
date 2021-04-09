@@ -32,15 +32,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public abstract class RangedWeapon extends MeleeWeapon {
+public class RangedWeapon extends MeleeWeapon {
 
-	public static final String AC_AMMO = "CHOOSE AMMO";
-	public static final String AC_UNAMMO = "REMOVE AMMO";
+	public static final String AC_AMMO = "AMMO";
+	public static final String AC_UNAMMO = "UNAMMO";
 	
 	public static final String AC_SHOOT		= "SHOOT";
 	
@@ -73,6 +74,9 @@ public abstract class RangedWeapon extends MeleeWeapon {
 			//actions.add(AC_UNEQUIP);
 		}
 		actions.add(AC_AMMO);
+		if(ammo != null) {
+			actions.add(AC_UNAMMO);
+		}
 		return actions;
 	}
 	
@@ -80,13 +84,22 @@ public abstract class RangedWeapon extends MeleeWeapon {
 	public void execute(Hero hero, String action) {
 		
 		super.execute(hero, action);
-		
+
+		if(ammo != null ){
+			if(ammo.quantity() < 1) {
+				ammo = null;
+			}
+		}
 		if (action.equals(AC_SHOOT)) {
-			
-			curUser = hero;
-			curItem = this;
-			GameScene.selectCell( shooter );
-			
+			if(ammo == null || ammo.quantity() < 1){
+				GLog.p(Messages.get(RangedWeapon.class, "no_ammo"));
+			}
+			else {
+				GLog.p(String.valueOf(ammo.quantity()));
+				curUser = hero;
+				curItem = this;
+				GameScene.selectCell(shooter);
+			}
 		}
 		if (action.equals(AC_EQUIP)) {
 			defaultAction = AC_SHOOT;
@@ -96,9 +109,11 @@ public abstract class RangedWeapon extends MeleeWeapon {
 		}
 		if (action.equals(AC_AMMO)){
 			doAmmo();
+			actions(hero).add(AC_UNAMMO);
 		}
 		if (action.equals(AC_UNAMMO)){
 			ammo = null;
+			actions(hero).remove(AC_UNAMMO);
 		}
 	}
 
@@ -134,7 +149,9 @@ public abstract class RangedWeapon extends MeleeWeapon {
 		GameScene.selectItem(itemSelector, mode, inventoryTitle);
 	}
 
-	protected abstract void onItemSelected( MissileWeapon item );
+	protected void onItemSelected(MissileWeapon item){
+		ammo = item;
+	}
 
 	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
@@ -246,7 +263,10 @@ public abstract class RangedWeapon extends MeleeWeapon {
 
 	@Override
 	public int targetingPos(Hero user, int dst) {
-		return 1;//knockArrow().targetingPos(user, dst);
+		if(ammo != null) {
+			return ammo.targetingPos(user, dst);
+		}
+		return 1;
 	}
 	
 	private int targetPos;
@@ -317,7 +337,14 @@ public abstract class RangedWeapon extends MeleeWeapon {
 		@Override
 		public void onSelect( Integer target ) {
 			if (target != null) {
-				//knockArrow().cast(curUser, target);
+				if(ammo.quantity() == 1){
+					ammo.cast(curUser, target);
+					ammo = null;
+				}
+				else {
+					ammo.cast(curUser, target);
+				}
+
 			}
 		}
 		@Override
