@@ -39,6 +39,7 @@ public abstract class InventorySpell extends Spell {
 	protected void onCast(Hero hero) {
 		curItem = detach( hero.belongings.backpack );
 		GameScene.selectItem( itemSelector, mode, inventoryTitle );
+		drainMP(hero);
 	}
 	
 	protected abstract void onItemSelected( Item item );

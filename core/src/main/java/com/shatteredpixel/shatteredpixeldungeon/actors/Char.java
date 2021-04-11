@@ -106,6 +106,8 @@ public abstract class Char extends Actor {
 	
 	public int HT;
 	public int HP;
+	public int MT;
+	public int MP;
 	
 	protected float baseSpeed	= 1;
 	protected PathFinder.Path path;

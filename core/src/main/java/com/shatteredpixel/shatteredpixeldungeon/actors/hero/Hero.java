@@ -179,8 +179,6 @@ public class Hero extends Char {
 	public int WIS;
 	public int VIT;
 	public int STATPOINTS;
-	public int MT;
-	public int MP;
 
 	public float awareness;
 
@@ -281,6 +279,21 @@ public class Hero extends Char {
 		return this.STR;
 	}
 
+	public int incStr(int amt) {
+		this.setSTR(this.STR+amt);
+		return this.STR;
+	}
+
+	public int decStr() {
+		this.setSTR(this.STR-1);
+		return this.STR;
+	}
+
+	public int decStr(int amt) {
+		this.setSTR(this.STR-amt);
+		return this.STR;
+	}
+
 	public int setDEX(int s) {
 		this.DEX = s;
 		return this.DEX;
@@ -289,6 +302,21 @@ public class Hero extends Char {
 
 	public int incDEX() {
 		this.setDEX(this.DEX+1);
+		return this.DEX;
+	}
+
+	public int incDEX(int amt) {
+		this.setDEX(this.DEX+amt);
+		return this.DEX;
+	}
+
+	public int decDEX() {
+		this.setDEX(this.DEX-1);
+		return this.DEX;
+	}
+
+	public int decDEX(int amt) {
+		this.setDEX(this.DEX-amt);
 		return this.DEX;
 	}
 
@@ -303,15 +331,34 @@ public class Hero extends Char {
 		return this.WIS;
 	}
 
+	public int incWIS(int amt) {
+		this.setWIS(this.WIS+amt);
+		return this.WIS;
+	}
+
+	public int decWIS() {
+		this.setWIS(this.WIS-1);
+		return this.WIS;
+	}
+
+	public int decWIS(int amt) {
+		this.setWIS(this.WIS-amt);
+		return this.WIS;
+	}
+
 	public int setVIT(int v) {
 		this.VIT = v;
 		updateHT(false);
 		return this.VIT;
 	}
 
-
 	public int incVIT() {
 		this.setVIT(this.VIT+1);
+		return this.VIT;
+	}
+
+	public int incVIT(int amt) {
+		this.setVIT(this.VIT+amt);
 		return this.VIT;
 	}
 
@@ -323,6 +370,43 @@ public class Hero extends Char {
 	public int incSTATPOINTS() {
 		this.setSTATPOINTS(this.STATPOINTS+1);
 		return this.STATPOINTS;
+	}
+
+	public int incSTATPOINTS(int amt) {
+		this.setSTATPOINTS(this.STATPOINTS+amt);
+		return this.STATPOINTS;
+	}
+
+	public int decSTATPOINTS() {
+		this.setSTATPOINTS(this.STATPOINTS-1);
+		return this.STATPOINTS;
+	}
+
+	public int decSTATPOINTS(int amt) {
+		this.setSTATPOINTS(this.STATPOINTS-amt);
+		return this.STATPOINTS;
+	}
+
+	public int setMP(int v) {
+		this.MP = v;
+		updateMT();
+		return this.MP;
+	}
+
+	public int incMP() {
+		return this.setVIT(this.MP+1);
+	}
+
+	public int incMP(int amt) {
+		return this.setMP(this.MP+amt);
+	}
+
+	public int decMP() {
+		return this.setVIT(this.MP-1);
+	}
+
+	public int decMP(int amt) {
+		return this.setMP(this.MP-amt);
 	}
 
 

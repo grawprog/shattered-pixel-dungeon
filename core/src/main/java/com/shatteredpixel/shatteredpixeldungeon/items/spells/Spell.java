@@ -31,14 +31,15 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import java.util.ArrayList;
 
 public abstract class Spell extends Item {
-	
+
 	public static final String AC_CAST = "CAST";
 	
 	{
 		stackable = true;
 		defaultAction = AC_CAST;
 	}
-	
+	protected static int baseMPCost = 1;
+
 	@Override
 	public ArrayList<String> actions(Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -72,7 +73,26 @@ public abstract class Spell extends Item {
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
+	public int getMPCost(Hero hero){
+		return baseMPCost - (hero.WIS() - 10);
+	}
+
+	public boolean checkMP(Hero hero){
+		if(hero.MP - getMPCost(hero) >= 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public void drainMP(Hero hero){
+			hero.decMP(getMPCost(hero));
+	}
+
+
+
 	protected abstract void onCast(Hero hero );
 	
 }

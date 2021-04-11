@@ -31,18 +31,55 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 public abstract class TargetedSpell extends Spell {
 	
 	protected int collisionProperties = Ballistica.PROJECTILE;
+
+	protected int baseMin = 1;
+	protected int baseMax = 4;
 	
 	@Override
 	protected void onCast(Hero hero) {
-		GameScene.selectCell(targeter);
+		if(checkMP(hero)) {
+			GameScene.selectCell(targeter);
+			drainMP(hero);
+		}
+		else{
+			GLog.p(Messages.get(Spell.class, "no_mana"));
+		}
 	}
-	
+
+	public int min(){
+		return min(buffedLvl());
+	}
+
+	public int min(int lvl){
+		return baseMin + lvl;
+	}
+
+	public int max(){
+		return max(buffedLvl());
+	}
+
+	public int max(int lvl){
+		return baseMax + lvl;
+	}
+
+	public int damageRoll(){
+		return damageRoll(buffedLvl());
+	}
+
+	public int damageRoll(int lvl){
+		int dmg = Random.NormalIntRange(min(lvl), max(lvl));
+		Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
+		return dmg;
+	}
+
 	protected abstract void affectTarget( Ballistica bolt, Hero hero );
 	
 	protected void fx( Ballistica bolt, Callback callback ) {
@@ -86,7 +123,7 @@ public abstract class TargetedSpell extends Spell {
 				curSpell.fx(shot, new Callback() {
 					public void call() {
 						curSpell.affectTarget(shot, curUser);
-						curSpell.detach( curUser.belongings.backpack );
+						//curSpell.detach( curUser.belongings.backpack );
 						Invisibility.dispel();
 						curSpell.updateQuickslot();
 						curUser.spendAndNext( 1f );

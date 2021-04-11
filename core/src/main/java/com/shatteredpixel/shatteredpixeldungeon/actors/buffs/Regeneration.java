@@ -44,12 +44,14 @@ public class Regeneration extends Buff {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (target.HP > 0 && (lock == null || lock.regenOn())) {
 					target.HP += 1;
-					if (target.HP == regencap()) {
+					if (target.HP == regencap() && target.MP == target.MT) {
 						((Hero) target).resting = false;
 					}
 				}
 			}
-
+			if (target instanceof Hero && target.MP < target.MT){
+				target.MP += 1;
+			}
 			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
 
 			float delay = REGENERATION_DELAY;
