@@ -519,6 +519,7 @@ public class ItemSpriteSheet {
 	public static final int POTION_CHARCOAL = POTIONS+9;
 	public static final int POTION_SILVER   = POTIONS+10;
 	public static final int POTION_IVORY    = POTIONS+11;
+	public static final int POTION_EMERALD   = POTIONS+12;
 	public static final int POTION_CATALYST = POTIONS+13;
 	static {
 		for (int i = POTIONS; i < POTIONS+16; i++)
@@ -539,6 +540,7 @@ public class ItemSpriteSheet {
 	public static final int EXOTIC_CHARCOAL = EXOTIC_POTIONS+9;
 	public static final int EXOTIC_SILVER   = EXOTIC_POTIONS+10;
 	public static final int EXOTIC_IVORY    = EXOTIC_POTIONS+11;
+	public static final int EXOTIC_EMERALD  = EXOTIC_POTIONS+12;
 	static {
 		for (int i = EXOTIC_POTIONS; i < EXOTIC_POTIONS+16; i++)
 			assignItemRect(i, 12, 13);
@@ -597,6 +599,7 @@ public class ItemSpriteSheet {
 	public static final int MAGIC_INFUSE    = SPELLS+10;
 	public static final int ALCHEMIZE       = SPELLS+11;
 	public static final int RECYCLE         = SPELLS+12;
+	public static final int MAGIC_MISSILE    = SPELLS+13;
 	static{
 		assignItemRect(MAGIC_PORTER,    12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
@@ -604,6 +607,7 @@ public class ItemSpriteSheet {
 		assignItemRect(RETURN_BEACON,    8, 16);
 		
 		assignItemRect(AQUA_BLAST,      11, 11);
+		assignItemRect(MAGIC_MISSILE,      11, 11);
 		assignItemRect(FEATHER_FALL,    11, 11);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
 		

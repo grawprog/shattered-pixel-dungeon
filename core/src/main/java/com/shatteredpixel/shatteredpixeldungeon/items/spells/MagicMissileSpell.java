@@ -32,15 +32,16 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class MagicMissile extends TargetedSpell {
+public class MagicMissileSpell extends TargetedSpell {
 	
 	{
-		image = ItemSpriteSheet.AQUA_BLAST;
+		image = ItemSpriteSheet.MAGIC_MISSILE;
 		baseMin = 2;
 		baseMax = 8;
 		baseMPCost = 10;
 	}
-
+	@Override
+	public int min(int lvl) {return baseMin + (lvl-1);}
 	@Override
 	public int max(int lvl){
 		return baseMax + 2*lvl;
@@ -50,7 +51,7 @@ public class MagicMissile extends TargetedSpell {
 	protected void affectTarget(Ballistica bolt, Hero hero) {
 		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {
-			ch.damage(damageRoll(), this);
+			ch.damage(damageRoll(quantity()), this);
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.87f, 1.15f) );
 			ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
 		} else {
@@ -72,7 +73,7 @@ public class MagicMissile extends TargetedSpell {
 			
 			cost = 4;
 			
-			output = MagicMissile.class;
+			output = MagicMissileSpell.class;
 			outQuantity = 12;
 		}
 		

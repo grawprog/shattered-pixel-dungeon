@@ -26,13 +26,34 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Spell extends Item {
 
 	public static final String AC_CAST = "CAST";
+
+	private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
+		{
+			put("red", ItemSpriteSheet.POTION_CRIMSON);
+			put("orange",ItemSpriteSheet.POTION_AMBER);
+			put("yellow",ItemSpriteSheet.POTION_GOLDEN);
+			put("lime",ItemSpriteSheet.POTION_JADE);
+			put("aquamarine",ItemSpriteSheet.POTION_TURQUOISE);
+			put("blue",ItemSpriteSheet.POTION_AZURE);
+			put("navy",ItemSpriteSheet.POTION_INDIGO);
+			put("violet",ItemSpriteSheet.POTION_MAGENTA);
+			put("ochre",ItemSpriteSheet.POTION_BISTRE);
+			put("black",ItemSpriteSheet.POTION_CHARCOAL);
+			put("grey",ItemSpriteSheet.POTION_SILVER);
+			put("white",ItemSpriteSheet.POTION_IVORY);
+			put("green",ItemSpriteSheet.POTION_EMERALD);
+
+		}
+	};
 	
 	{
 		stackable = true;
@@ -75,7 +96,7 @@ public abstract class Spell extends Item {
 	}
 
 	public int getMPCost(Hero hero){
-		return baseMPCost - (hero.WIS() - 10);
+		return baseMPCost + (quantity()-1) - (hero.WIS() - 10);
 	}
 
 	public boolean checkMP(Hero hero){
