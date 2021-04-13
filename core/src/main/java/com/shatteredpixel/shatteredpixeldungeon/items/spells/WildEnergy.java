@@ -32,14 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMysticalEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
 public class WildEnergy extends TargetedSpell {
 	
 	{
-		image = ItemSpriteSheet.WILD_ENERGY;
+		//image = ItemSpriteSheet.WILD_ENERGY;
 	}
 	
 	//we rely on cursedWand to do fx instead

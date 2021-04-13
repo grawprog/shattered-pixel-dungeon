@@ -91,7 +91,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.CurseInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.InventorySpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicMissileSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
@@ -99,7 +98,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Spell;
-import com.shatteredpixel.shatteredpixeldungeon.items.spells.TargetedSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection;
@@ -347,14 +345,12 @@ public class Generator {
 					BeaconOfReturning.class,
 					CurseInfusion.class,
 					FeatherFall.class,
-					InventorySpell.class,
 					MagicalInfusion.class,
 					MagicalPorter.class,
 					MagicMissileSpell.class,
 					PhaseShift.class,
 					ReclaimTrap.class,
 					Recycle.class,
-					TargetedSpell.class,
 					WildEnergy.class,
 			};
 			SPELL.probs = new float[]{ 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3 };

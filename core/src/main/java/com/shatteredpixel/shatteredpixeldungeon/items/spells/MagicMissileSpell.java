@@ -28,14 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 public class MagicMissileSpell extends TargetedSpell {
 	
 	{
-		image = ItemSpriteSheet.MAGIC_MISSILE;
+		//image = ItemSpriteSheet.MAGIC_MISSILE;
 		baseMin = 2;
 		baseMax = 8;
 		baseMPCost = 10;

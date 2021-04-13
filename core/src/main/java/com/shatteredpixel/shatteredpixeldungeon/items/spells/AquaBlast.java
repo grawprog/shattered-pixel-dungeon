@@ -30,14 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class AquaBlast extends TargetedSpell {
 	
 	{
-		image = ItemSpriteSheet.AQUA_BLAST;
+		//image = ItemSpriteSheet.AQUA_BLAST;
 	}
 	
 	@Override

@@ -29,13 +29,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PhaseShift extends TargetedSpell {
 	
 	{
-		image = ItemSpriteSheet.PHASE_SHIFT;
+		//image = ItemSpriteSheet.PHASE_SHIFT;
 	}
 	
 	@Override

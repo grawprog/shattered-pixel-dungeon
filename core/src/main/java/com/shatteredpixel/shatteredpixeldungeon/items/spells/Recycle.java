@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScrol
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Reflection;
@@ -45,7 +44,7 @@ import com.watabou.utils.Reflection;
 public class Recycle extends InventorySpell {
 	
 	{
-		image = ItemSpriteSheet.RECYCLE;
+		//image = ItemSpriteSheet.RECYCLE;
 		mode = WndBag.Mode.RECYCLABLE;
 	}
 	

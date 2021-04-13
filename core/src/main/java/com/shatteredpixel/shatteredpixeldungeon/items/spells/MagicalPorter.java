@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.MerchantsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 public class MagicalPorter extends InventorySpell {
 	
 	{
-		image = ItemSpriteSheet.MAGIC_PORTER;
+		//image = ItemSpriteSheet.MAGIC_PORTER;
 		mode = WndBag.Mode.NOT_EQUIPPED;
 	}
 	

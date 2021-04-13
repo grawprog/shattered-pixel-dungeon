@@ -586,21 +586,27 @@ public class ItemSpriteSheet {
 	                                                                                    //16 free slots
 	
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots
-	public static final int MAGIC_PORTER    = SPELLS+0;
-	public static final int PHASE_SHIFT     = SPELLS+1;
-	public static final int WILD_ENERGY = SPELLS+2;
-	public static final int RETURN_BEACON   = SPELLS+3;
-	
-	public static final int AQUA_BLAST      = SPELLS+5;
-	public static final int FEATHER_FALL    = SPELLS+6;
-	public static final int RECLAIM_TRAP    = SPELLS+7;
-	
-	public static final int CURSE_INFUSE    = SPELLS+9;
-	public static final int MAGIC_INFUSE    = SPELLS+10;
-	public static final int ALCHEMIZE       = SPELLS+11;
-	public static final int RECYCLE         = SPELLS+12;
-	public static final int MAGIC_MISSILE    = SPELLS+13;
-	static{
+	public static final int SPELL_ORB_RED    = SPELLS+0;
+	public static final int SPELL_ORB_ORANGE     = SPELLS+1;
+	public static final int SPELL_ORB_YELLOW = SPELLS+2;
+	public static final int SPELL_ORB_CHARTREUSE   = SPELLS+3;
+	public static final int SPELL_ORB_CYAN   = SPELLS+4;
+	public static final int SPELL_ORB_BLUE      = SPELLS+5;
+	public static final int SPELL_ORB_NAVY    = SPELLS+6;
+	public static final int SPELL_ORB_VIOLET    = SPELLS+7;
+	public static final int SPELL_ORB_BURGUNDY    = SPELLS+8;
+	public static final int SPELL_ORB_BLACK    = SPELLS+9;
+	public static final int SPELL_ORB_GREY     = SPELLS+10;
+	public static final int SPELL_ORB_WHITE        = SPELLS+11;
+	public static final int SPELL_ORB_GREEN          = SPELLS+12;
+	public static final int SPELL_ORB_SCARLET    = SPELLS+13;
+	 static {
+		 for (int i = SPELLS; i < SPELLS + 16; i++)  {
+		 	assignItemRect(i, 11, 11);
+		 }
+	 }
+	/*		assignItemRect(i, 12, 14);
+	st}                                               atic{
 		assignItemRect(MAGIC_PORTER,    12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
 		assignItemRect(WILD_ENERGY,      8, 16);
@@ -615,7 +621,7 @@ public class ItemSpriteSheet {
 		assignItemRect(MAGIC_INFUSE,    10, 15);
 		assignItemRect(ALCHEMIZE,       10, 15);
 		assignItemRect(RECYCLE,         10, 15);
-	}
+	}     */
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots
 	public static final int MEAT        = FOOD+0;

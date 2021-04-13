@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
@@ -47,7 +46,7 @@ import com.watabou.utils.PathFinder;
 public class BeaconOfReturning extends Spell {
 	
 	{
-		image = ItemSpriteSheet.RETURN_BEACON;
+		//image = ItemSpriteSheet.RETURN_BEACON;
 	}
 	
 	public int returnDepth	= -1;

@@ -176,8 +176,8 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, staff);
 
 		MagicMissileSpell mmspell = new MagicMissileSpell();
-		mmspell.identify();
-		mmspell.quantity(10).collect();
+		//mmspell.identify();
+		mmspell.quantity(1).collect();
 
 
 

@@ -48,7 +48,7 @@ import java.util.HashMap;
 public class ArcaneCatalyst extends Spell {
 	
 	{
-		image = ItemSpriteSheet.SCROLL_CATALYST;
+		 image = ItemSpriteSheet.SCROLL_CATALYST;
 	}
 	
 	private static HashMap<Class<? extends Scroll>, Float> scrollChances = new HashMap<>();

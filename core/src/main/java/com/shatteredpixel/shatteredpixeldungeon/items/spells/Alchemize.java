@@ -26,13 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 	
 	{
-		image = ItemSpriteSheet.ALCHEMIZE;
+		//image = ItemSpriteSheet.ALCHEMIZE;
 	}
 	
 	@Override
