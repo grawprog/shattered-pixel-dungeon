@@ -320,7 +320,7 @@ public class WndStartGame extends Window {
 						case MAGE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.HOLDER, null));
-							heroMisc.icon(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null));
+							heroMisc.icon(new ItemSprite(ItemSpriteSheet.WAND_ORNATE, null));
 							break;
 						case ROGUE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null));

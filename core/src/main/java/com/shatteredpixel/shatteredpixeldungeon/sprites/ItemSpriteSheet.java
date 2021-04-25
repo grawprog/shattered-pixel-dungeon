@@ -361,7 +361,22 @@ public class ItemSpriteSheet {
 	                                                                                    //16 free slots
 
 	private static final int WANDS              =                           xy(1, 14);  //16 slots
-	public static final int WAND_MAGIC_MISSILE  = WANDS+0;
+
+	public static final int WAND_CORAL         = WANDS+0;
+	public static final int WAND_SPIRAL         = WANDS+1;
+	public static final int WAND_GLASS          = WANDS+2;
+	public static final int WAND_ORNATE         = WANDS+3;
+	public static final int WAND_EBONY          = WANDS+4;
+	public static final int WAND_IVORY          = WANDS+5;
+	public static final int WAND_SPIKED         = WANDS+6;
+	public static final int WAND_WOODEN        = WANDS+7;
+	public static final int WAND_GOLDEN         = WANDS+8;
+	public static final int WAND_GRIM           = WANDS+9;
+	public static final int WAND_SILVER         = WANDS+10;
+	public static final int WAND_JADE           = WANDS+11;
+	public static final int WAND_JEWELLED        = WANDS+12;
+
+	/*public static final int WAND_MAGIC_MISSILE  = WANDS+0;
 	public static final int WAND_FIREBOLT       = WANDS+1;
 	public static final int WAND_FROST          = WANDS+2;
 	public static final int WAND_LIGHTNING      = WANDS+3;
@@ -373,7 +388,8 @@ public class ItemSpriteSheet {
 	public static final int WAND_CORRUPTION     = WANDS+9;
 	public static final int WAND_WARDING        = WANDS+10;
 	public static final int WAND_REGROWTH       = WANDS+11;
-	public static final int WAND_TRANSFUSION    = WANDS+12;
+	public static final int WAND_TRANSFUSION    = WANDS+12;*/
+
 	static {
 		for (int i = WANDS; i < WANDS+16; i++)
 			assignItemRect(i, 14, 14);

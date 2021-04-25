@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicMissileSpell;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
@@ -178,7 +179,8 @@ public enum HeroClass {
 		MagicMissileSpell mmspell = new MagicMissileSpell();
 		//mmspell.identify();
 		mmspell.quantity(1).collect();
-
+		WandOfPrismaticLight wand = new WandOfPrismaticLight();
+		wand.collect();
 
 
 		new ScrollHolder().collect();

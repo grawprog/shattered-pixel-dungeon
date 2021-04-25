@@ -38,17 +38,21 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -58,12 +62,33 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public abstract class Wand extends Item {
 
 	public static final String AC_ZAP	= "ZAP";
 
 	private static final float TIME_TO_ZAP	= 1f;
+
+	private static final HashMap<String, Integer> materials = new HashMap<String, Integer>() {
+		{
+			put("coral", ItemSpriteSheet.WAND_CORAL);
+			put("spiral",ItemSpriteSheet.WAND_SPIRAL);
+			put("glass",ItemSpriteSheet.WAND_GLASS);
+			put("ornate",ItemSpriteSheet.WAND_ORNATE);
+			put("ebony",ItemSpriteSheet.WAND_EBONY);
+			put("ivory",ItemSpriteSheet.WAND_IVORY);
+			put("spiked",ItemSpriteSheet.WAND_SPIKED);
+			put("wooden",ItemSpriteSheet.WAND_WOODEN);
+			put("golden",ItemSpriteSheet.WAND_GOLDEN);
+			put("grim",ItemSpriteSheet.WAND_GRIM);
+			put("silver",ItemSpriteSheet.WAND_SILVER);
+			put("jade",ItemSpriteSheet.WAND_JADE);
+			put("jewelled",ItemSpriteSheet.WAND_JEWELLED);
+
+		}
+	};
 	
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
@@ -79,14 +104,22 @@ public abstract class Wand extends Item {
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
 
+	protected static ItemStatusHandler<Wand> handler;
+
+	protected String material;
+
 	protected int collisionProperties = Ballistica.MAGIC_BOLT;
-	
+
 	{
 		defaultAction = AC_ZAP;
 		usesTargeting = true;
 		bones = true;
 	}
-	
+	@SuppressWarnings("unchecked")
+	public static void initMaterials() {
+		handler = new ItemStatusHandler<>( (Class<? extends Wand>[]) Generator.Category.WAND.classes, materials );
+	}
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -96,7 +129,60 @@ public abstract class Wand extends Item {
 
 		return actions;
 	}
-	
+
+	public static void save( Bundle bundle ) {
+		handler.save( bundle );
+	}
+
+	public static void saveSelectively( Bundle bundle, ArrayList<Item> items ) {
+		ArrayList<Class<?extends Item>> classes = new ArrayList<>();
+		for (Item i : items){
+			if (i instanceof Wand){
+				if (!classes.contains(i.getClass())){
+					classes.add(i.getClass());
+				}
+			}
+		}
+		handler.saveClassesSelectively( bundle, classes );
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void restore( Bundle bundle ) {
+		handler = new ItemStatusHandler<>( (Class<? extends Wand>[])Generator.Category.WAND.classes, materials, bundle );
+	}
+
+	public Wand() {
+		super();
+		reset();
+	}
+
+	//anonymous wands are always IDed, do not affect ID status,
+	//and their sprite is replaced by a placeholder if they are not known,
+	//useful for items that appear in UIs, or which are only spawned for their effects
+	protected boolean anonymous = false;
+	public void anonymize(){
+		if (!isKnown()) image = ItemSpriteSheet.WAND_HOLDER;
+		anonymous = true;
+	}
+
+	public boolean isKnown() {
+		return anonymous || (handler != null && handler.isKnown( this ));
+	}
+
+	public void setKnown() {
+		if (!anonymous) {
+			if (!isKnown()) {
+				handler.know(this);
+				updateQuickslot();
+			}
+
+			if (Dungeon.hero.isAlive()) {
+				Catalog.setSeen(getClass());
+			}
+		}
+	}
+
+
 	@Override
 	public void execute( Hero hero, String action ) {
 
@@ -215,12 +301,19 @@ public abstract class Wand extends Item {
 		
 		curChargeKnown = true;
 		super.identify();
-		
+		if (!isKnown()) {
+			setKnown();
+		}
 		updateQuickslot();
 		
 		return this;
 	}
-	
+
+	@Override
+	public String name() {
+		return isKnown() ? super.name() : Messages.get(this, material);
+	}
+
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
 		if (!isIdentified() && availableUsesToID <= USES_TO_ID/2f) {
@@ -231,21 +324,36 @@ public abstract class Wand extends Item {
 
 	@Override
 	public String info() {
-		String desc = desc();
+		if(isKnown()) {
+			String desc = desc();
 
-		desc += "\n\n" + statsDesc();
+			desc += "\n\n" + statsDesc();
 
-		if (cursed && cursedKnown) {
-			desc += "\n\n" + Messages.get(Wand.class, "cursed");
-		} else if (!isIdentified() && cursedKnown){
-			desc += "\n\n" + Messages.get(Wand.class, "not_cursed");
+			if (cursed && cursedKnown) {
+				desc += "\n\n" + Messages.get(Wand.class, "cursed");
+			} else if (!isIdentified() && cursedKnown) {
+				desc += "\n\n" + Messages.get(Wand.class, "not_cursed");
+			}
+
+			if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
+				desc += "\n\n" + Messages.get(this, "bmage_desc");
+			}
+
+			return desc;
 		}
+		else { return Messages.get(this, "unknown_desc"); }
+	}
 
-		if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
-			desc += "\n\n" + Messages.get(this, "bmage_desc");
-		}
+	public static HashSet<Class<? extends Wand>> getKnown() {
+		return handler.known();
+	}
 
-		return desc;
+	public static HashSet<Class<? extends Wand>> getUnknown() {
+		return handler.unknown();
+	}
+
+	public static boolean allKnown() {
+		return handler.known().size() == Generator.Category.WAND.classes.length;
 	}
 
 	public String statsDesc(){
@@ -254,7 +362,7 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public boolean isIdentified() {
-		return super.isIdentified() && curChargeKnown;
+		return isKnown() && curChargeKnown;
 	}
 	
 	@Override
@@ -468,6 +576,10 @@ public abstract class Wand extends Item {
 		super.reset();
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
+		if (handler != null && handler.contains(this)) {
+			image = handler.image(this);
+			material = handler.label(this);
+		}
 	}
 
 	protected int collisionProperties( int target ){

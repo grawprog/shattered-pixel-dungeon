@@ -21,14 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -39,15 +32,15 @@ public class v0_3_X_Changes {
 		ChangeInfo changes = new ChangeInfo( "v0.3.X", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		changeInfos.add(changes);
-		
+		/*
 		add_v0_3_5_Changes(changeInfos);
 		add_v0_3_4_Changes(changeInfos);
 		add_v0_3_3_Changes(changeInfos);
 		add_v0_3_2_Changes(changeInfos);
 		add_v0_3_1_Changes(changeInfos);
-		add_v0_3_0_Changes(changeInfos);
+		add_v0_3_0_Changes(changeInfos);*/
 	}
-	
+	/*
 	public static void add_v0_3_5_Changes( ArrayList<ChangeInfo> changeInfos ){
 		ChangeInfo changes = new ChangeInfo("v0.3.5", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -337,5 +330,5 @@ public class v0_3_X_Changes {
 				"_-_ Shading added to main game interface\n" +
 				"_-_ Buffs now have descriptions, tap their icons!\n" +
 				"_-_ Visual indicator added for surprising enemies"));
-	}
+	}*/
 }

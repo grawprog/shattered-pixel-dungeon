@@ -42,7 +42,7 @@ import com.watabou.utils.Random;
 public class WandOfFrost extends DamageWand {
 
 	{
-		image = ItemSpriteSheet.WAND_FROST;
+		//image = ItemSpriteSheet.WAND_FROST;
 	}
 
 	public int min(int lvl){

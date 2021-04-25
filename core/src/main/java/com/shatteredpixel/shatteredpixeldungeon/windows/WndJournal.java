@@ -314,7 +314,7 @@ public class WndJournal extends WndTabbed {
 					case "Looting":
 						return new ItemSprite( ItemSpriteSheet.CRYSTAL_KEY );
 					case "Magic":
-						return new ItemSprite( ItemSpriteSheet.WAND_LIGHTNING );
+						return new ItemSprite( ItemSpriteSheet.WAND_ORNATE );
 				}
 			}
 			
